@@ -19,5 +19,47 @@
     "TSA Pre\u2713 Line Wait Time": "1 min",
     "id": 3,
     "created_at": "2024-11-09T10:51:07.097161"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "5 min",
+    "TSA Pre\u2713 Line Wait Time": "2 min",
+    "id": 4,
+    "created_at": "2024-11-09T15:39:45.768085"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "3 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 5,
+    "created_at": "2024-11-09T15:39:45.768758"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "1 min",
+    "TSA Pre\u2713 Line Wait Time": "3 min",
+    "id": 6,
+    "created_at": "2024-11-09T15:39:45.769120"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "5 min",
+    "TSA Pre\u2713 Line Wait Time": "2 min",
+    "id": 7,
+    "created_at": "2024-11-09T15:40:06.914601"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "3 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 8,
+    "created_at": "2024-11-09T15:40:06.915169"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "1 min",
+    "TSA Pre\u2713 Line Wait Time": "3 min",
+    "id": 9,
+    "created_at": "2024-11-09T15:40:06.915432"
   }
 ]
