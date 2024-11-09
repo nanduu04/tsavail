@@ -62,3 +62,39 @@ def get_lga():
 
     except Exception as e:
         return jsonify({'error': f'Server error: {str(e)}'}), 500
+
+    
+@main.route('/jfk', methods=['GET'])
+def get_jfk():
+    """Get all JFK walk times data"""
+    try:
+        jfk_data = storage.get_jfk_data()
+
+        if not jfk_data:
+            return jsonify({'message': 'No JFK walk times data found'}), 404
+
+        return jsonify({
+            'message': 'JFK walk times data retrieved successfully',
+            'data': jfk_data
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
+
+
+@main.route('/ewr', methods=['GET'])
+def get_ewr():
+    """Get all EWR TSA wait times data"""
+    try:
+        ewr_data = storage.get_ewr_data()
+
+        if not ewr_data:
+            return jsonify({'message': 'No EWR TSA wait times data found'}), 404
+
+        return jsonify({
+            'message': 'EWR TSA wait times data retrieved successfully',
+            'data': ewr_data
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': f'Server error: {str(e)}'}), 500

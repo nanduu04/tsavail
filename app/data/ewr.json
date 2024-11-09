@@ -1,0 +1,32 @@
+[
+  {
+    "Terminal": "",
+    "General Line Wait Time": "8 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 1
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "15 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 2
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "11 min",
+    "TSA Pre\u2713 Line Wait Time": "",
+    "id": 3
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "33 min",
+    "TSA Pre\u2713 Line Wait Time": "",
+    "id": 4
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "38 min",
+    "TSA Pre\u2713 Line Wait Time": "2 min",
+    "id": 5
+  }
+]
