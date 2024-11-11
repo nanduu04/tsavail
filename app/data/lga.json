@@ -61,5 +61,23 @@
     "TSA Pre\u2713 Line Wait Time": "3 min",
     "id": 9,
     "created_at": "2024-11-09T15:40:06.915432"
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "3 min",
+    "TSA Pre\u2713 Line Wait Time": "4 min",
+    "id": 10
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "2 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 11
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "4 min",
+    "TSA Pre\u2713 Line Wait Time": "No Wait",
+    "id": 12
   }
 ]

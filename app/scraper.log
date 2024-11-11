@@ -1,0 +1,279 @@
+2024-11-11 11:33:24,214 - INFO - ====== WebDriver manager ======
+2024-11-11 11:33:24,301 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:33:24,366 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:33:24,426 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:33:25,653 - INFO - Chrome driver initialized successfully
+2024-11-11 11:33:25,658 - INFO - Starting scraping job
+2024-11-11 11:33:25,661 - INFO - ====== WebDriver manager ======
+2024-11-11 11:33:25,782 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:33:25,843 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:33:25,902 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:33:26,889 - INFO - Chrome driver initialized successfully
+2024-11-11 11:33:34,915 - INFO - Successfully scraped LGA data: 3 entries
+2024-11-11 11:33:36,979 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 11:33:59,969 - INFO - Successfully scraped EWR data: 5 entries
+2024-11-11 11:33:59,969 - INFO - Completed scraping job successfully
+2024-11-11 11:34:00,103 - INFO - Chrome driver closed successfully
+2024-11-11 11:34:00,103 - INFO - Scraper scheduled to run every 15 minutes
+2024-11-11 11:40:15,741 - INFO - ====== WebDriver manager ======
+2024-11-11 11:40:15,828 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:40:15,904 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:40:15,965 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:40:17,005 - INFO - Chrome driver initialized successfully
+2024-11-11 11:40:17,005 - INFO - Starting scraping job
+2024-11-11 11:40:17,006 - INFO - ====== WebDriver manager ======
+2024-11-11 11:40:17,112 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:40:17,174 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:40:17,236 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:40:18,296 - INFO - Chrome driver initialized successfully
+2024-11-11 11:40:27,138 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:40:27,172 - INFO - Inserted LGA data with ID: 6732337ba6b8659668446dd6
+2024-11-11 11:40:27,205 - INFO - Inserted LGA data with ID: 6732337ba6b8659668446dd7
+2024-11-11 11:40:27,238 - INFO - Inserted LGA data with ID: 6732337ba6b8659668446dd8
+2024-11-11 11:40:27,238 - INFO - Successfully scraped LGA data: 3 entries
+2024-11-11 11:40:27,269 - INFO - MongoDB connection closed
+2024-11-11 11:40:34,415 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:40:34,454 - INFO - Inserted JFK data with ID: 67323382a6b8659668446dda
+2024-11-11 11:40:34,499 - INFO - Inserted JFK data with ID: 67323382a6b8659668446ddb
+2024-11-11 11:40:34,541 - INFO - Inserted JFK data with ID: 67323382a6b8659668446ddc
+2024-11-11 11:40:34,826 - INFO - Inserted JFK data with ID: 67323382a6b8659668446ddd
+2024-11-11 11:40:34,865 - INFO - Inserted JFK data with ID: 67323382a6b8659668446dde
+2024-11-11 11:40:34,906 - INFO - Inserted JFK data with ID: 67323382a6b8659668446ddf
+2024-11-11 11:40:34,947 - INFO - Inserted JFK data with ID: 67323382a6b8659668446de0
+2024-11-11 11:40:34,990 - INFO - Inserted JFK data with ID: 67323382a6b8659668446de1
+2024-11-11 11:40:35,037 - INFO - Inserted JFK data with ID: 67323382a6b8659668446de2
+2024-11-11 11:40:35,087 - INFO - Inserted JFK data with ID: 67323383a6b8659668446de3
+2024-11-11 11:40:35,132 - INFO - Inserted JFK data with ID: 67323383a6b8659668446de4
+2024-11-11 11:40:35,378 - INFO - Inserted JFK data with ID: 67323383a6b8659668446de5
+2024-11-11 11:40:35,378 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 11:40:35,432 - INFO - MongoDB connection closed
+2024-11-11 11:40:55,599 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:40:55,636 - INFO - Inserted EWR data with ID: 67323397a6b8659668446de7
+2024-11-11 11:40:55,669 - INFO - Inserted EWR data with ID: 67323397a6b8659668446de8
+2024-11-11 11:40:55,701 - INFO - Inserted EWR data with ID: 67323397a6b8659668446de9
+2024-11-11 11:40:55,733 - INFO - Inserted EWR data with ID: 67323397a6b8659668446dea
+2024-11-11 11:40:55,765 - INFO - Inserted EWR data with ID: 67323397a6b8659668446deb
+2024-11-11 11:40:55,766 - INFO - Successfully scraped EWR data: 5 entries
+2024-11-11 11:40:55,795 - INFO - MongoDB connection closed
+2024-11-11 11:40:55,796 - INFO - Completed scraping job successfully
+2024-11-11 11:40:55,989 - INFO - Chrome driver closed successfully
+2024-11-11 11:40:55,989 - INFO - Scraper scheduled to run every 15 minutes
+2024-11-11 11:55:17,515 - INFO - Starting scraping job
+2024-11-11 11:55:17,519 - INFO - ====== WebDriver manager ======
+2024-11-11 11:55:17,654 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:55:17,721 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:55:17,780 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:55:19,000 - INFO - Chrome driver initialized successfully
+2024-11-11 11:55:26,226 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:55:26,260 - INFO - Inserted LGA data with ID: 673236fea6b8659668446ded
+2024-11-11 11:55:26,295 - INFO - Inserted LGA data with ID: 673236fea6b8659668446dee
+2024-11-11 11:55:26,327 - INFO - Inserted LGA data with ID: 673236fea6b8659668446def
+2024-11-11 11:55:26,328 - INFO - Successfully scraped LGA data: 3 entries
+2024-11-11 11:55:26,358 - INFO - MongoDB connection closed
+2024-11-11 11:55:29,066 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:55:29,100 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df1
+2024-11-11 11:55:29,135 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df2
+2024-11-11 11:55:29,169 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df3
+2024-11-11 11:55:29,206 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df4
+2024-11-11 11:55:29,245 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df5
+2024-11-11 11:55:29,281 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df6
+2024-11-11 11:55:29,322 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df7
+2024-11-11 11:55:29,361 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df8
+2024-11-11 11:55:29,639 - INFO - Inserted JFK data with ID: 67323701a6b8659668446df9
+2024-11-11 11:55:29,674 - INFO - Inserted JFK data with ID: 67323701a6b8659668446dfa
+2024-11-11 11:55:29,711 - INFO - Inserted JFK data with ID: 67323701a6b8659668446dfb
+2024-11-11 11:55:29,749 - INFO - Inserted JFK data with ID: 67323701a6b8659668446dfc
+2024-11-11 11:55:29,749 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 11:55:29,783 - INFO - MongoDB connection closed
+2024-11-11 11:55:53,242 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:55:53,277 - INFO - Inserted EWR data with ID: 67323719a6b8659668446dfe
+2024-11-11 11:55:53,309 - INFO - Inserted EWR data with ID: 67323719a6b8659668446dff
+2024-11-11 11:55:53,342 - INFO - Inserted EWR data with ID: 67323719a6b8659668446e00
+2024-11-11 11:55:53,384 - INFO - Inserted EWR data with ID: 67323719a6b8659668446e01
+2024-11-11 11:55:53,417 - INFO - Inserted EWR data with ID: 67323719a6b8659668446e02
+2024-11-11 11:55:53,418 - INFO - Successfully scraped EWR data: 5 entries
+2024-11-11 11:55:53,447 - INFO - MongoDB connection closed
+2024-11-11 11:55:53,447 - INFO - Completed scraping job successfully
+2024-11-11 11:55:53,600 - INFO - Chrome driver closed successfully
+2024-11-11 11:58:55,548 - INFO - ====== WebDriver manager ======
+2024-11-11 11:58:55,649 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:58:55,716 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:58:55,776 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:58:56,886 - INFO - Chrome driver initialized successfully
+2024-11-11 11:58:56,888 - INFO - Starting scraping job
+2024-11-11 11:58:56,892 - INFO - ====== WebDriver manager ======
+2024-11-11 11:58:57,001 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:58:57,060 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 11:58:57,121 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 11:58:58,226 - INFO - Chrome driver initialized successfully
+2024-11-11 11:59:05,771 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:59:05,806 - INFO - Inserted LGA data with ID: 673237d9257133d79466ab95
+2024-11-11 11:59:05,841 - INFO - Inserted LGA data with ID: 673237d9257133d79466ab96
+2024-11-11 11:59:05,876 - INFO - Inserted LGA data with ID: 673237d9257133d79466ab97
+2024-11-11 11:59:05,876 - INFO - Successfully scraped LGA data: 3 entries
+2024-11-11 11:59:05,909 - INFO - MongoDB connection closed
+2024-11-11 11:59:10,115 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:59:10,156 - INFO - Inserted JFK data with ID: 673237de257133d79466ab99
+2024-11-11 11:59:10,197 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9a
+2024-11-11 11:59:10,237 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9b
+2024-11-11 11:59:10,275 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9c
+2024-11-11 11:59:10,314 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9d
+2024-11-11 11:59:10,355 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9e
+2024-11-11 11:59:10,396 - INFO - Inserted JFK data with ID: 673237de257133d79466ab9f
+2024-11-11 11:59:10,436 - INFO - Inserted JFK data with ID: 673237de257133d79466aba0
+2024-11-11 11:59:10,725 - INFO - Inserted JFK data with ID: 673237de257133d79466aba1
+2024-11-11 11:59:10,765 - INFO - Inserted JFK data with ID: 673237de257133d79466aba2
+2024-11-11 11:59:11,041 - INFO - Inserted JFK data with ID: 673237de257133d79466aba3
+2024-11-11 11:59:11,081 - INFO - Inserted JFK data with ID: 673237df257133d79466aba4
+2024-11-11 11:59:11,081 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 11:59:11,116 - INFO - MongoDB connection closed
+2024-11-11 11:59:28,856 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 11:59:28,894 - INFO - Inserted EWR data with ID: 673237f0257133d79466aba6
+2024-11-11 11:59:28,928 - INFO - Inserted EWR data with ID: 673237f0257133d79466aba7
+2024-11-11 11:59:28,962 - INFO - Inserted EWR data with ID: 673237f0257133d79466aba8
+2024-11-11 11:59:28,994 - INFO - Inserted EWR data with ID: 673237f0257133d79466aba9
+2024-11-11 11:59:29,027 - INFO - Inserted EWR data with ID: 673237f0257133d79466abaa
+2024-11-11 11:59:29,027 - INFO - Successfully scraped EWR data: 5 entries
+2024-11-11 11:59:29,062 - INFO - MongoDB connection closed
+2024-11-11 11:59:29,062 - INFO - Completed scraping job successfully
+2024-11-11 11:59:29,199 - INFO - Chrome driver closed successfully
+2024-11-11 11:59:29,199 - INFO - Scraper scheduled to run every 15 minutes
+2024-11-11 12:01:51,806 - INFO - ====== WebDriver manager ======
+2024-11-11 12:01:51,916 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:01:51,982 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:01:52,041 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 12:01:53,147 - INFO - Chrome driver initialized successfully
+2024-11-11 12:01:53,150 - INFO - Starting scraping job
+2024-11-11 12:01:53,154 - INFO - ====== WebDriver manager ======
+2024-11-11 12:01:53,266 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:01:53,326 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:01:53,385 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 12:01:54,358 - INFO - Chrome driver initialized successfully
+2024-11-11 12:01:57,354 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:01:57,386 - INFO - Inserted LGA data with ID: 6732388580c10671f6210952
+2024-11-11 12:01:57,418 - INFO - Inserted LGA data with ID: 6732388580c10671f6210953
+2024-11-11 12:01:57,450 - INFO - Inserted LGA data with ID: 6732388580c10671f6210954
+2024-11-11 12:01:57,485 - INFO - Inserted LGA data with ID: 6732388580c10671f6210955
+2024-11-11 12:01:57,529 - INFO - Inserted LGA data with ID: 6732388580c10671f6210956
+2024-11-11 12:01:57,561 - INFO - Inserted LGA data with ID: 6732388580c10671f6210957
+2024-11-11 12:01:57,594 - INFO - Inserted LGA data with ID: 6732388580c10671f6210958
+2024-11-11 12:01:57,594 - INFO - Successfully scraped LGA data: 7 entries
+2024-11-11 12:01:57,623 - INFO - MongoDB connection closed
+2024-11-11 12:02:00,639 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:02:00,673 - INFO - Inserted JFK data with ID: 6732388880c10671f621095a
+2024-11-11 12:02:00,707 - INFO - Inserted JFK data with ID: 6732388880c10671f621095b
+2024-11-11 12:02:00,739 - INFO - Inserted JFK data with ID: 6732388880c10671f621095c
+2024-11-11 12:02:00,772 - INFO - Inserted JFK data with ID: 6732388880c10671f621095d
+2024-11-11 12:02:00,805 - INFO - Inserted JFK data with ID: 6732388880c10671f621095e
+2024-11-11 12:02:00,838 - INFO - Inserted JFK data with ID: 6732388880c10671f621095f
+2024-11-11 12:02:00,872 - INFO - Inserted JFK data with ID: 6732388880c10671f6210960
+2024-11-11 12:02:00,904 - INFO - Inserted JFK data with ID: 6732388880c10671f6210961
+2024-11-11 12:02:00,936 - INFO - Inserted JFK data with ID: 6732388880c10671f6210962
+2024-11-11 12:02:00,969 - INFO - Inserted JFK data with ID: 6732388880c10671f6210963
+2024-11-11 12:02:01,002 - INFO - Inserted JFK data with ID: 6732388880c10671f6210964
+2024-11-11 12:02:01,036 - INFO - Inserted JFK data with ID: 6732388980c10671f6210965
+2024-11-11 12:02:01,036 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 12:02:01,065 - INFO - MongoDB connection closed
+2024-11-11 12:02:18,506 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:02:18,541 - INFO - Inserted EWR data with ID: 6732389a80c10671f6210967
+2024-11-11 12:02:18,573 - INFO - Inserted EWR data with ID: 6732389a80c10671f6210968
+2024-11-11 12:02:18,605 - INFO - Inserted EWR data with ID: 6732389a80c10671f6210969
+2024-11-11 12:02:18,638 - INFO - Inserted EWR data with ID: 6732389a80c10671f621096a
+2024-11-11 12:02:18,670 - INFO - Inserted EWR data with ID: 6732389a80c10671f621096b
+2024-11-11 12:02:18,670 - INFO - Successfully scraped EWR data: 5 entries
+2024-11-11 12:02:18,699 - INFO - MongoDB connection closed
+2024-11-11 12:02:18,699 - INFO - Completed scraping job successfully
+2024-11-11 12:02:18,833 - INFO - Chrome driver closed successfully
+2024-11-11 12:02:18,833 - INFO - Scraper scheduled to run every 15 minutes
+2024-11-11 12:03:55,636 - INFO - ====== WebDriver manager ======
+2024-11-11 12:03:55,723 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:03:55,791 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:03:55,854 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 12:03:56,932 - INFO - Chrome driver initialized successfully
+2024-11-11 12:03:56,932 - INFO - Starting scraping job
+2024-11-11 12:03:56,932 - INFO - ====== WebDriver manager ======
+2024-11-11 12:03:57,042 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:03:57,101 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:03:57,195 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 12:03:58,166 - INFO - Chrome driver initialized successfully
+2024-11-11 12:04:01,283 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:04:01,316 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3844
+2024-11-11 12:04:01,349 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3845
+2024-11-11 12:04:01,384 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3846
+2024-11-11 12:04:01,423 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3847
+2024-11-11 12:04:01,456 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3848
+2024-11-11 12:04:01,488 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa3849
+2024-11-11 12:04:01,520 - INFO - Inserted LGA data with ID: 67323901cdbe329970fa384a
+2024-11-11 12:04:01,520 - INFO - Successfully scraped LGA data: 7 entries
+2024-11-11 12:04:01,550 - INFO - MongoDB connection closed
+2024-11-11 12:04:04,435 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:04:04,468 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa384c
+2024-11-11 12:04:04,505 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa384d
+2024-11-11 12:04:04,537 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa384e
+2024-11-11 12:04:04,572 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa384f
+2024-11-11 12:04:04,607 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3850
+2024-11-11 12:04:04,642 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3851
+2024-11-11 12:04:04,674 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3852
+2024-11-11 12:04:04,708 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3853
+2024-11-11 12:04:04,740 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3854
+2024-11-11 12:04:04,772 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3855
+2024-11-11 12:04:04,806 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3856
+2024-11-11 12:04:04,839 - INFO - Inserted JFK data with ID: 67323904cdbe329970fa3857
+2024-11-11 12:04:04,839 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 12:04:04,870 - INFO - MongoDB connection closed
+2024-11-11 12:04:07,789 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:04:07,823 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa3859
+2024-11-11 12:04:07,856 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385a
+2024-11-11 12:04:07,888 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385b
+2024-11-11 12:04:07,920 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385c
+2024-11-11 12:04:07,953 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385d
+2024-11-11 12:04:07,989 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385e
+2024-11-11 12:04:08,022 - INFO - Inserted EWR data with ID: 67323907cdbe329970fa385f
+2024-11-11 12:04:08,022 - INFO - Successfully scraped EWR data: 7 entries
+2024-11-11 12:04:08,052 - INFO - MongoDB connection closed
+2024-11-11 12:04:08,052 - INFO - Completed scraping job successfully
+2024-11-11 12:04:08,169 - INFO - Chrome driver closed successfully
+2024-11-11 12:04:08,169 - INFO - Scraper scheduled to run every 15 minutes
+2024-11-11 12:18:57,609 - INFO - Starting scraping job
+2024-11-11 12:18:57,611 - INFO - ====== WebDriver manager ======
+2024-11-11 12:18:57,744 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:18:57,807 - INFO - Get LATEST chromedriver version for google-chrome
+2024-11-11 12:18:57,866 - INFO - Driver [/Users/nandupokhrel/.wdm/drivers/chromedriver/mac64/130.0.6723.116/chromedriver-mac-arm64/chromedriver] found in cache
+2024-11-11 12:18:59,058 - INFO - Chrome driver initialized successfully
+2024-11-11 12:19:02,795 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:19:02,829 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3861
+2024-11-11 12:19:02,862 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3862
+2024-11-11 12:19:02,895 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3863
+2024-11-11 12:19:02,928 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3864
+2024-11-11 12:19:02,960 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3865
+2024-11-11 12:19:02,992 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3866
+2024-11-11 12:19:03,025 - INFO - Inserted LGA data with ID: 67323c86cdbe329970fa3867
+2024-11-11 12:19:03,025 - INFO - Successfully scraped LGA data: 7 entries
+2024-11-11 12:19:03,056 - INFO - MongoDB connection closed
+2024-11-11 12:19:05,666 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:19:05,701 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa3869
+2024-11-11 12:19:05,733 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386a
+2024-11-11 12:19:05,765 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386b
+2024-11-11 12:19:05,798 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386c
+2024-11-11 12:19:05,831 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386d
+2024-11-11 12:19:05,864 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386e
+2024-11-11 12:19:05,897 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa386f
+2024-11-11 12:19:05,930 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa3870
+2024-11-11 12:19:05,964 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa3871
+2024-11-11 12:19:05,997 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa3872
+2024-11-11 12:19:06,032 - INFO - Inserted JFK data with ID: 67323c89cdbe329970fa3873
+2024-11-11 12:19:06,066 - INFO - Inserted JFK data with ID: 67323c8acdbe329970fa3874
+2024-11-11 12:19:06,066 - INFO - Successfully scraped JFK data: 12 entries
+2024-11-11 12:19:06,095 - INFO - MongoDB connection closed
+2024-11-11 12:19:09,119 - INFO - Successfully connected to MongoDB database: airport_timing
+2024-11-11 12:19:09,158 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa3876
+2024-11-11 12:19:09,192 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa3877
+2024-11-11 12:19:09,225 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa3878
+2024-11-11 12:19:09,259 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa3879
+2024-11-11 12:19:09,291 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa387a
+2024-11-11 12:19:09,324 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa387b
+2024-11-11 12:19:09,357 - INFO - Inserted EWR data with ID: 67323c8dcdbe329970fa387c
+2024-11-11 12:19:09,357 - INFO - Successfully scraped EWR data: 7 entries
+2024-11-11 12:19:09,386 - INFO - MongoDB connection closed
+2024-11-11 12:19:09,386 - INFO - Completed scraping job successfully
+2024-11-11 12:19:09,521 - INFO - Chrome driver closed successfully
