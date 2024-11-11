@@ -4,159 +4,160 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
-from storage import JsonStorage
+import schedule
+import logging
+from datetime import datetime
+from storage import MongoDBStorage
 
-# Set up Chrome options for headless mode
-chrome_options = Options()
-chrome_options.add_argument("--headless")  # Optional: run Chrome in headless mode
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('scraper.log'),
+        logging.StreamHandler()
+    ]
+)
 
-# Set up the WebDriver with the ChromeDriverManager
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-
-# Function to scrape LaGuardia Airport TSA wait times
-def scrape_lga():
-    # Open the LaGuardia Airport TSA wait times page
-    url = "https://www.laguardiaairport.com/"
-    driver.get(url)
-
-    # Wait for the page to load
-    time.sleep(5)
-
-    # Find the table containing the security wait times
-    table = driver.find_element(By.CLASS_NAME, 'security-table')
-
-    # Extract all rows of the table (excluding the header)
-    rows = table.find_elements(By.TAG_NAME, 'tr')
-
-    # Initialize a list to store the scraped data
-    security_data = []
-
-    # Loop through each row to extract the required information
-    for row in rows:
-        columns = row.find_elements(By.TAG_NAME, 'td')
-        
-        if len(columns) > 0:  # Ensure it's a valid row with data
-            terminal = columns[0].text.strip()
-            general_line = columns[4].text.strip()
-            tsa_pre = columns[5].text.strip()
-            
-            # Create a dictionary for each scraped entry
-            data = {
-                "Terminal": terminal,
-                "General Line Wait Time": general_line,
-                "TSA Pre✓ Line Wait Time": tsa_pre
-            }
-            
-            # Append to the list of security data
-            security_data.append(data)
-
-    # Create an instance of JsonStorage
-    storage = JsonStorage()
-
-    # Add the scraped data to the JSON file using create_lga_data
-    for entry in security_data:
-        # You can add additional metadata or modify the structure if needed
-        storage.create_lga_data(entry)
-
-    # Print confirmation of saved data
-    print(f"Saved {len(security_data)} entries to LGA data.")
-
-# Function to scrape JFK Airport walk times
-def scrape_jfk():
-    # URL of the JFK Airport page with walk times
-    url = 'https://www.jfkairport.com/'
-    driver.get(url)
-    # time.sleep(5)
-
-    # Wait for the elements to be present
-    driver.implicitly_wait(10)
-
-    # Locate the section with walk times
-    walk_time_div = driver.find_element(By.ID, "walk-timeDiv")
-
-    # Extract terminal information
-    terminals = walk_time_div.find_elements(By.CLASS_NAME, "terminal-container")
-
-    # Initialize a list to store the scraped data
-    jfk_data = []
-
-    # Function to extract gate times
-    def extract_gate_times(terminal):
-        term_name = terminal.find_element(By.CLASS_NAME, "term-no").text
-        gates = terminal.find_elements(By.CLASS_NAME, "test")
-        gate_times = {}
-        for gate in gates:
-            gate_name = gate.find_element(By.TAG_NAME, "td").text.strip()
-            walk_time = gate.find_element(By.CLASS_NAME, "lg-numbers").text.strip()
-            gate_times[gate_name] = walk_time
-        return term_name, gate_times
-
-    # Loop through terminals and store walk times
-    for terminal in terminals:
-        term_name, gate_times = extract_gate_times(terminal)
-        for gate, time in gate_times.items():
-            data = {
-                "Terminal": term_name,
-                "Gate": gate,
-                "Walk Time": time
-            }
-            jfk_data.append(data)
+class AirportScraper:
+    def __init__(self):
+        self.setup_driver()
     
-    # Create an instance of JsonStorage
-    storage = JsonStorage()
+    def setup_driver(self):
+        """Initialize or reinitialize the Chrome driver"""
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        try:
+            self.driver = webdriver.Chrome(
+                service=Service(ChromeDriverManager().install()),
+                options=chrome_options
+            )
+            logging.info("Chrome driver initialized successfully")
+        except Exception as e:
+            logging.error(f"Failed to initialize Chrome driver: {str(e)}")
+            raise
 
-    # Add the scraped data to the JSON file using create_jfk_data
-    for entry in jfk_data:
-        storage.create_jfk_data(entry)
+    def scrape_lga(self):
+            url = 'https://www.laguardiaairport.com/'
+            self.driver.get(url)
+            self.driver.implicitly_wait(10)
 
-    # Print confirmation of saved data
-    print(f"Saved {len(jfk_data)} entries to JFK data.")
+            walk_time_div = self.driver.find_element(By.ID, "walk-timeDiv")
+            terminals = walk_time_div.find_elements(By.CLASS_NAME, "terminal-container")
+            lga_data = []
 
+            for terminal in terminals:
+                term_name = terminal.find_element(By.CLASS_NAME, "term-no").text
+                gates = terminal.find_elements(By.CLASS_NAME, "test")
+                
+                for gate in gates:
+                    lga_data.append({
+                        "Terminal": term_name,
+                        "Gate": gate.find_element(By.TAG_NAME, "td").text.strip(),
+                        "Walk Time": gate.find_element(By.CLASS_NAME, "lg-numbers").text.strip()
+                    })
 
-def scrape_ewr():
-    # Open the Newark Airport TSA wait times page
-    url = "https://www.newarkairport.com/"
-    driver.get(url)
+            storage = MongoDBStorage()
+            for entry in lga_data:
+                storage.create_lga_data(entry)
 
-    # Wait for the page to load
-    time.sleep(5)
+            logging.info(f"Successfully scraped LGA data: {len(lga_data)} entries")
+            return True    
 
-    # Find the table containing the security wait times
-    table = driver.find_element(By.CLASS_NAME, 'security-table')
+    def scrape_jfk(self):
+        try:
+            url = 'https://www.jfkairport.com/'
+            self.driver.get(url)
+            self.driver.implicitly_wait(10)
 
-    # Extract all rows of the table (excluding the header)
-    rows = table.find_elements(By.TAG_NAME, 'tr')
+            walk_time_div = self.driver.find_element(By.ID, "walk-timeDiv")
+            terminals = walk_time_div.find_elements(By.CLASS_NAME, "terminal-container")
+            jfk_data = []
 
-    # Initialize a list to store the scraped data
-    ewr_data = []
+            for terminal in terminals:
+                term_name = terminal.find_element(By.CLASS_NAME, "term-no").text
+                gates = terminal.find_elements(By.CLASS_NAME, "test")
+                
+                for gate in gates:
+                    jfk_data.append({
+                        "Terminal": term_name,
+                        "Gate": gate.find_element(By.TAG_NAME, "td").text.strip(),
+                        "Walk Time": gate.find_element(By.CLASS_NAME, "lg-numbers").text.strip()
+                    })
 
-    # Loop through each row to extract the required information
-    for row in rows:
-        columns = row.find_elements(By.TAG_NAME, 'td')
-        
-        if len(columns) > 0:
-            terminal = columns[0].text.strip()
-            general_line = columns[4].text.strip()
-            tsa_pre = columns[5].text.strip()
+            storage = MongoDBStorage()
+            for entry in jfk_data:
+                storage.create_jfk_data(entry)
+
+            logging.info(f"Successfully scraped JFK data: {len(jfk_data)} entries")
+            return True
+        except Exception as e:
+            logging.error(f"Error scraping JFK: {str(e)}")
+            return False
+
+    def scrape_ewr(self):
+        url = 'https://www.newarkairport.com/'
+        self.driver.get(url)
+        self.driver.implicitly_wait(10)
+
+        walk_time_div = self.driver.find_element(By.ID, "walk-timeDiv")
+        terminals = walk_time_div.find_elements(By.CLASS_NAME, "terminal-container")
+        ewr_data = []
+
+        for terminal in terminals:
+            term_name = terminal.find_element(By.CLASS_NAME, "term-no").text
+            gates = terminal.find_elements(By.CLASS_NAME, "test")
             
-            data = {
-                "Terminal": terminal,
-                "General Line Wait Time": general_line,
-                "TSA Pre✓ Line Wait Time": tsa_pre
-            }
+            for gate in gates:
+                ewr_data.append({
+                    "Terminal": term_name,
+                    "Gate": gate.find_element(By.TAG_NAME, "td").text.strip(),
+                    "Walk Time": gate.find_element(By.CLASS_NAME, "lg-numbers").text.strip()
+                })
+
+        storage = MongoDBStorage()
+        for entry in ewr_data:
+            storage.create_ewr_data(entry)
+
+        logging.info(f"Successfully scraped EWR data: {len(ewr_data)} entries")
+        return True    
+
+    def run_all_scrapers(self):
+        """Run all scrapers and handle any failures"""
+        logging.info("Starting scraping job")
+        try:
+            # Reinitialize the driver for each run to prevent stale sessions
+            self.setup_driver()
             
-            ewr_data.append(data)
+            self.scrape_lga()
+            self.scrape_jfk()
+            self.scrape_ewr()
+            
+            logging.info("Completed scraping job successfully")
+        except Exception as e:
+            logging.error(f"Error in scraping job: {str(e)}")
+        finally:
+            try:
+                self.driver.quit()
+                logging.info("Chrome driver closed successfully")
+            except Exception as e:
+                logging.error(f"Error closing Chrome driver: {str(e)}")
 
-    storage = JsonStorage()
+def main():
+    scraper = AirportScraper()
+    
+    # Schedule the scraping job to run every 15 minutes
+    schedule.every(15).minutes.do(scraper.run_all_scrapers)
+    
+    # Run once immediately on startup
+    scraper.run_all_scrapers()
+    
+    logging.info("Scraper scheduled to run every 15 minutes")
+    
+    # Keep the script running
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
-    for entry in ewr_data:
-        storage.create_ewr_data(entry)
-
-    print(f"Saved {len(ewr_data)} entries to EWR data.")
-
-# Run the scraping functions
-# scrape_lga()
-# scrape_jfk()
-scrape_ewr() 
-# Close the browser after scraping
-driver.quit()
+if __name__ == "__main__":
+    main()

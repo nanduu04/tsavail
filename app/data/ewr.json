@@ -28,5 +28,35 @@
     "General Line Wait Time": "38 min",
     "TSA Pre\u2713 Line Wait Time": "2 min",
     "id": 5
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "1 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 6
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "30 min",
+    "TSA Pre\u2713 Line Wait Time": "1 min",
+    "id": 7
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "5 min",
+    "TSA Pre\u2713 Line Wait Time": "",
+    "id": 8
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "14 min",
+    "TSA Pre\u2713 Line Wait Time": "",
+    "id": 9
+  },
+  {
+    "Terminal": "",
+    "General Line Wait Time": "3 min",
+    "TSA Pre\u2713 Line Wait Time": "5 min",
+    "id": 10
   }
 ]

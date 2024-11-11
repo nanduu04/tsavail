@@ -82,5 +82,77 @@
     "Walk Time": "8-11",
     "id": 12,
     "created_at": "2024-11-09T15:40:08.786914"
+  },
+  {
+    "Terminal": "Terminal 1",
+    "Gate": "Gate 1-4",
+    "Walk Time": "1-2",
+    "id": 13
+  },
+  {
+    "Terminal": "Terminal 1",
+    "Gate": "Gate 5-11",
+    "Walk Time": "3-4",
+    "id": 14
+  },
+  {
+    "Terminal": "Terminal 4",
+    "Gate": "Gates A3-B25",
+    "Walk Time": "3-5",
+    "id": 15
+  },
+  {
+    "Terminal": "Terminal 4",
+    "Gate": "Gates B26-B33",
+    "Walk Time": "7-11",
+    "id": 16
+  },
+  {
+    "Terminal": "Terminal 4",
+    "Gate": "Gates B34-B42",
+    "Walk Time": "12-14",
+    "id": 17
+  },
+  {
+    "Terminal": "Terminal 4",
+    "Gate": "Gates B43-B55",
+    "Walk Time": "15-18",
+    "id": 18
+  },
+  {
+    "Terminal": "Terminal 5",
+    "Gate": "Gates 1-11, 18-27",
+    "Walk Time": "2-4",
+    "id": 19
+  },
+  {
+    "Terminal": "Terminal 5",
+    "Gate": "Gates 12-17, 28-30",
+    "Walk Time": "5-7",
+    "id": 20
+  },
+  {
+    "Terminal": "Terminal 7",
+    "Gate": "All Gates",
+    "Walk Time": "1-2",
+    "id": 21
+  },
+  {
+    "Terminal": "Terminal 8",
+    "Gate": "Gates 5-16",
+    "Walk Time": "2-4",
+    "id": 22
+  },
+  {
+    "Terminal": "Terminal 8",
+    "Gate": "Gates 1-4, 40-47",
+    "Walk Time": "5-8",
+    "id": 23
+  },
+  {
+    "Terminal": "Terminal 8",
+    "Gate": "Gates 31A-39",
+    "Walk Time": "8-11",
+    "id": 24
   }
 ]
