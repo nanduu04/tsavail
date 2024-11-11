@@ -1,0 +1,32 @@
+[
+    {
+        "terminal": "Terminal 1",
+        "general_line": "17",
+        "tsa_pre": "8",
+        "timestamp": "2024-11-11T15:57:59.501745"
+    },
+    {
+        "terminal": "Terminal 4",
+        "general_line": "N/A",
+        "tsa_pre": "N/A",
+        "timestamp": "2024-11-11T15:57:59.501745"
+    },
+    {
+        "terminal": "Terminal 5",
+        "general_line": "30",
+        "tsa_pre": "10",
+        "timestamp": "2024-11-11T15:57:59.501745"
+    },
+    {
+        "terminal": "Terminal 7",
+        "general_line": "9",
+        "tsa_pre": "",
+        "timestamp": "2024-11-11T15:57:59.501745"
+    },
+    {
+        "terminal": "Terminal 8",
+        "general_line": "29",
+        "tsa_pre": "14",
+        "timestamp": "2024-11-11T15:57:59.501745"
+    }
+]

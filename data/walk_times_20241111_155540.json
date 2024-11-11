@@ -1,0 +1,74 @@
+[
+    {
+        "terminal": "Terminal 1",
+        "gate": "Gate 1-4",
+        "walk_time": "1-2",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 1",
+        "gate": "Gate 5-11",
+        "walk_time": "3-4",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 4",
+        "gate": "Gates A3-B25",
+        "walk_time": "3-5",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 4",
+        "gate": "Gates B26-B33",
+        "walk_time": "7-11",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 4",
+        "gate": "Gates B34-B42",
+        "walk_time": "12-14",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 4",
+        "gate": "Gates B43-B55",
+        "walk_time": "15-18",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 5",
+        "gate": "Gates 1-11, 18-27",
+        "walk_time": "2-4",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 5",
+        "gate": "Gates 12-17, 28-30",
+        "walk_time": "5-7",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 7",
+        "gate": "All Gates",
+        "walk_time": "1-2",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 8",
+        "gate": "Gates 5-16",
+        "walk_time": "2-4",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 8",
+        "gate": "Gates 1-4, 40-47",
+        "walk_time": "5-8",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    },
+    {
+        "terminal": "Terminal 8",
+        "gate": "Gates 31A-39",
+        "walk_time": "8-11",
+        "timestamp": "2024-11-11T15:55:40.541870"
+    }
+]
