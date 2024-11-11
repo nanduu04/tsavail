@@ -1,0 +1,43 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NYC Airports Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-blue-600 text-white p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">NYC Airports Dashboard</h1>
+        <div class="space-x-4">
+          <button
+            class="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded"
+            hx-get="/flights"
+            hx-target="#main-content"
+            hx-trigger="click"
+          >
+            Flight Schedules
+          </button>
+          <button
+            class="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded"
+            hx-get="/wait-times"
+            hx-target="#main-content"
+            hx-trigger="click"
+          >
+            Wait Times
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+      <div id="main-content">
+        <!-- Default content will be replaced by HTMX -->
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </body>
+</html>

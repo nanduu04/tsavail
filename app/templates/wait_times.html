@@ -1,0 +1,152 @@
+<!-- wait_times.html -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <!-- JFK Card -->
+  <div
+    class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden"
+    hx-get="/jfk-times"
+    hx-trigger="load, every 30s"
+  >
+    <div class="border-b border-gray-200 bg-blue-50">
+      <h2 class="text-xl font-semibold text-blue-700 p-4">JFK Airport</h2>
+    </div>
+    <div class="p-4 space-y-4" id="jfk-content">
+      {% for item in jfk_data %}
+      <div class="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+        <div class="font-medium text-gray-800 mb-2">
+          Terminal {{ item.Terminal }}
+        </div>
+        <div class="flex items-center space-x-2 text-gray-600">
+          <svg
+            class="w-5 h-5 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>Gate {{ item.Gate }}: {{ item['Walk Time'] }} min walk</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- LGA Card -->
+  <div
+    class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden"
+    hx-get="/lga-times"
+    hx-trigger="load, every 30s"
+  >
+    <div class="border-b border-gray-200 bg-green-50">
+      <h2 class="text-xl font-semibold text-green-700 p-4">
+        LaGuardia Airport
+      </h2>
+    </div>
+    <div class="p-4 space-y-4" id="lga-content">
+      {% for item in lga_data %}
+      <div class="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+        {% if item.Terminal %}
+        <div class="font-medium text-gray-800 mb-2">
+          Terminal {{ item.Terminal }}
+        </div>
+        {% endif %}
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2 text-gray-600">
+            <svg
+              class="w-5 h-5 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857"
+              ></path>
+            </svg>
+            <span>Regular Line: {{ item['General Line Wait Time'] }}</span>
+          </div>
+          <div class="flex items-center space-x-2 text-gray-600">
+            <svg
+              class="w-5 h-5 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              ></path>
+            </svg>
+            <span>TSA PreCheck: {{ item['TSA Pre✓ Line Wait Time'] }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- EWR Card -->
+  <div
+    class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden"
+    hx-get="/ewr-times"
+    hx-trigger="load, every 30s"
+  >
+    <div class="border-b border-gray-200 bg-red-50">
+      <h2 class="text-xl font-semibold text-red-700 p-4">Newark Airport</h2>
+    </div>
+    <div class="p-4 space-y-4" id="ewr-content">
+      {% for item in ewr_data %}
+      <div class="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+        {% if item.Terminal %}
+        <div class="font-medium text-gray-800 mb-2">
+          Terminal {{ item.Terminal }}
+        </div>
+        {% endif %}
+        <div class="space-y-2">
+          <div class="flex items-center space-x-2 text-gray-600">
+            <svg
+              class="w-5 h-5 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857"
+              ></path>
+            </svg>
+            <span>Regular Line: {{ item['General Line Wait Time'] }}</span>
+          </div>
+          <div class="flex items-center space-x-2 text-gray-600">
+            <svg
+              class="w-5 h-5 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              ></path>
+            </svg>
+            <span>TSA PreCheck: {{ item['TSA Pre✓ Line Wait Time'] }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

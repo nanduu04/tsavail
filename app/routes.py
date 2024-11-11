@@ -1,8 +1,39 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from app.storage import JsonStorage
 
-main = Blueprint('main', __name__)  # Fixed syntax for __name__
+main = Blueprint('main', __name__)
 storage = JsonStorage()
+
+@main.route('/')
+def index():
+    """Main dashboard page"""
+    return render_template('base.html')
+
+@main.route('/wait-times')
+def wait_times():
+    """Wait times dashboard"""
+    return render_template('wait_times.html', 
+                         jfk_data=storage.get_jfk_data(),
+                         lga_data=storage.get_lga_data(),
+                         ewr_data=storage.get_ewr_data())
+
+@main.route('/jfk-times')
+def jfk_times():
+    """Partial template for JFK times"""
+    return render_template('partials/jfk_times.html', 
+                         jfk_data=storage.get_jfk_data())
+
+@main.route('/lga-times')
+def lga_times():
+    """Partial template for LGA times"""
+    return render_template('partials/lga_times.html', 
+                         lga_data=storage.get_lga_data())
+
+@main.route('/ewr-times')
+def ewr_times():
+    """Partial template for EWR times"""
+    return render_template('partials/ewr_times.html', 
+                         ewr_data=storage.get_ewr_data())
 
 @main.route('/health', methods=['GET'])
 def health_check():
