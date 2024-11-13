@@ -92,15 +92,25 @@ class BaseAirportStorage(ABC):
             logging.error(f"Error creating {self.airport_code} walk time data: {str(e)}")
             raise
 
-    # Query methods
     def get_security_times(self, limit=100, skip=0):
         """Get security wait times with pagination"""
         try:
+            logging.info(f"Fetching security times for {self.airport_code}")
+            logging.info(f"Parameters: limit={limit}, skip={skip}")
+            
             cursor = self.security_collection.find({}) \
                         .sort('timestamp', -1) \
                         .skip(skip) \
                         .limit(limit)
-            return list(cursor)
+            
+            result = list(cursor)
+            logging.info(f"Found {len(result)} security time records")
+            
+            # Log sample data if available
+            if result:
+                logging.debug(f"Sample record: {result[0]}")
+            
+            return result
         except Exception as e:
             logging.error(f"Error retrieving {self.airport_code} security wait times: {str(e)}")
             raise
@@ -108,11 +118,22 @@ class BaseAirportStorage(ABC):
     def get_walk_times(self, limit=100, skip=0):
         """Get walk times with pagination"""
         try:
+            logging.info(f"Fetching walk times for {self.airport_code}")
+            logging.info(f"Parameters: limit={limit}, skip={skip}")
+            
             cursor = self.walk_collection.find({}) \
                         .sort('timestamp', -1) \
                         .skip(skip) \
                         .limit(limit)
-            return list(cursor)
+            
+            result = list(cursor)
+            logging.info(f"Found {len(result)} walk time records")
+            
+            # Log sample data if available
+            if result:
+                logging.debug(f"Sample record: {result[0]}")
+            
+            return result
         except Exception as e:
             logging.error(f"Error retrieving {self.airport_code} walk times: {str(e)}")
             raise
