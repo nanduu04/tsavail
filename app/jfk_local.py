@@ -1,3 +1,4 @@
+from storage import JFKStorage
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -5,10 +6,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from datetime import datetime
 import logging
+from pathlib import Path
 from typing import Dict, List, Optional
 import time
 from abc import ABC, abstractmethod
-from storage import MongoDBStorage
 
 # Set up logging
 logging.basicConfig(
@@ -16,19 +17,19 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler('lga_scraper.log')
+        logging.FileHandler('jfk_scraper.log')
     ]
 )
 logger = logging.getLogger(__name__)
 
-class LGAScraperException(Exception):
-    """Custom exception for LGA scraper specific errors"""
+class jfkScraperException(Exception):
+    """Custom exception for jfk scraper specific errors"""
     pass
 
-class BaseLGAScraper(ABC):
-    """Base class for LGA scrapers with common functionality"""
+class BasejfkScraper(ABC):
+    """Base class for jfk scrapers with common functionality"""
     
-    BASE_URL = 'https://www.laguardiaairport.com/'
+    BASE_URL = 'https://www.jfkairport.com/'
     TIMEOUT = 10
     
     def __init__(self, headless: bool = True):
@@ -41,12 +42,6 @@ class BaseLGAScraper(ABC):
         self.headless = headless
         self.driver = None
         self.wait = None
-        try:
-            self.storage = MongoDBStorage()
-            logger.info("MongoDB storage initialized successfully")
-        except Exception as e:
-            logger.error(f"Failed to initialize MongoDB storage: {str(e)}")
-            raise
     
     def __enter__(self):
         """Set up the Chrome driver when entering context"""
@@ -73,7 +68,7 @@ class BaseLGAScraper(ABC):
         """Abstract method to be implemented by child classes"""
         pass
 
-class LGASecurityWaitTimeScraper(BaseLGAScraper):
+class jfkSecurityWaitTimeScraper(BasejfkScraper):
     """Class to handle scraping of LaGuardia Airport security wait times"""
     
     def _clean_time(self, time_str: str) -> str:
@@ -83,6 +78,7 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
     def _extract_terminal_name(self, row) -> str:
         """Extract terminal name from the security table row"""
         try:
+            # First try: Look for terminal text in span element
             terminal_div = row.find_element(
                 By.XPATH, ".//td[contains(@class, 'security-first-col')]//div[contains(@class, 'term-text')]"
             )
@@ -93,6 +89,7 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
             pass
 
         try:
+            # Second try: Get from image title attribute
             img = row.find_element(
                 By.XPATH, ".//td[contains(@class, 'security-first-col')]//img"
             )
@@ -103,6 +100,7 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
             pass
 
         try:
+            # Third try: Get from alt attribute
             img = row.find_element(
                 By.XPATH, ".//td[contains(@class, 'security-first-col')]//img"
             )
@@ -123,8 +121,10 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
             or None if scraping fails
         """
         try:
-            logger.info("Starting LGA security wait time scrape")
+            logger.info("Starting jfk security wait time scrape")
             self.driver.get(self.BASE_URL)
+            
+            # Add a small delay to ensure page loads completely
             time.sleep(2)
             
             security_data = []
@@ -132,34 +132,43 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
                 EC.presence_of_element_located((By.CLASS_NAME, 'security-table'))
             )
             
+            # Updated selector to get security rows
             security_rows = security_table.find_elements(
                 By.XPATH, ".//tr[contains(@class, 'security-row') or contains(@class, 'odd') or contains(@class, 'even')]"
             )
             
+            timestamp = datetime.now().isoformat()
+            
             for row in security_rows:
                 try:
                     terminal_name = self._extract_terminal_name(row)
+                    
+                    # Get security times
                     times = row.find_elements(
                         By.XPATH, ".//div[contains(@class, 'right-value')]"
                     )
-                    
-                    general_time = self._clean_time(times[1].text) if len(times) > 1 else 'N/A'
-                    tsa_time = self._clean_time(times[2].text) if len(times) > 2 else 'N/A'
+                    timesNA = row.find_elements(
+                        By.XPATH, ".//div[contains(@class, 'NA')]"
+                    )
+                    # Skip the first element as it's usually empty or contains different information
+                    general_time = self._clean_time(times[0].text) if len(times) > 1 else 'N/A'
+                    tsa_time = self._clean_time(times[1].text) if len(timesNA) > 1 else 'N/A'
                     
                     data = {
                         "terminal": terminal_name,
                         "general_line": general_time,
                         "tsa_pre": tsa_time,
-                        "type": "security"
+                        "timestamp": timestamp
                     }
                     
-                    # Store in MongoDB
-                    self.storage.create_lga_data(data)
                     security_data.append(data)
                     logger.info(f"Security times for {terminal_name}: General={general_time}, TSA Pre✓={tsa_time}")
                     
-                except Exception as e:
+                except (NoSuchElementException, IndexError) as e:
                     logger.error(f"Error processing security row: {str(e)}")
+                    continue
+                except Exception as e:
+                    logger.error(f"Unexpected error processing security row: {str(e)}")
                     continue
             
             return security_data
@@ -168,7 +177,7 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
             logger.error(f"Error in security wait time scraper: {str(e)}", exc_info=True)
             return None
 
-class LGAWalkTimeScraper(BaseLGAScraper):
+class jfkWalkTimeScraper(BasejfkScraper):
     """Class to handle scraping of LaGuardia Airport walk times"""
     
     def _clean_time(self, time_str: str) -> str:
@@ -184,8 +193,10 @@ class LGAWalkTimeScraper(BaseLGAScraper):
             or None if scraping fails
         """
         try:
-            logger.info("Starting LGA walk time scrape")
+            logger.info("Starting jfk walk time scrape")
             self.driver.get(self.BASE_URL)
+            
+            # Add a small delay to ensure page loads completely
             time.sleep(2)
             
             walk_times = []
@@ -194,10 +205,12 @@ class LGAWalkTimeScraper(BaseLGAScraper):
             )
             
             terminals = walk_time_div.find_elements(By.CLASS_NAME, "terminal-container")
+            timestamp = datetime.now().isoformat()
             
             for terminal in terminals:
                 try:
                     term_name = terminal.find_element(By.CLASS_NAME, "term-no").text.strip()
+                    
                     gates = terminal.find_elements(
                         By.XPATH, ".//tr[contains(@class, 'test')]"
                     )
@@ -211,25 +224,23 @@ class LGAWalkTimeScraper(BaseLGAScraper):
                                     By.CLASS_NAME, "lg-numbers"
                                 ).text.strip()
                                 
+                                # Clean the walk time
                                 walk_time = self._clean_time(walk_time)
                                 
                                 data = {
                                     "terminal": term_name,
                                     "gate": gate_text,
                                     "walk_time": walk_time,
-                                    "type": "walk"
+                                    "timestamp": timestamp
                                 }
-                                
-                                # Store in MongoDB
-                                self.storage.create_lga_data(data)
                                 walk_times.append(data)
                                 logger.debug(f"Processed: {term_name} - {gate_text}")
                                 
-                        except Exception as e:
+                        except (NoSuchElementException, IndexError) as e:
                             logger.error(f"Error processing gate in {term_name}: {str(e)}")
                             continue
                             
-                except Exception as e:
+                except NoSuchElementException as e:
                     logger.error(f"Error processing terminal: {str(e)}")
                     continue
             
@@ -237,4 +248,25 @@ class LGAWalkTimeScraper(BaseLGAScraper):
             
         except Exception as e:
             logger.error(f"Error in walk time scraper: {str(e)}", exc_info=True)
+            return None
 
+def main_jfk():
+    # Initialize JFK MongoDB storage
+    db_storage = JFKStorage()
+    
+    with jfkSecurityWaitTimeScraper(headless=True) as security_scraper:
+        security_data = security_scraper.scrape()
+        if security_data:
+            logger.info("\nSaving JFK security wait time data to MongoDB...")
+            db_storage.create_security_times(security_data)
+            logger.info("Successfully saved JFK security wait time data")
+    
+    with jfkWalkTimeScraper(headless=True) as walk_scraper:
+        walk_data = walk_scraper.scrape()
+        if walk_data:
+            logger.info("\nSaving JFK walk time data to MongoDB...")
+            db_storage.create_walk_times(walk_data)
+            logger.info("Successfully saved JFK walk time data")
+
+if __name__ == "__main__":
+    main_jfk()

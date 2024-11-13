@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+
 {% block content %}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- JFK Card -->
     <div class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="border-b border-gray-200 bg-blue-50">
-            <h2 class="text-xl font-semibold text-blue-700 p-4">JFK Security Wait Times</h2>
+            <h2 class="text-xl font-semibold text-blue-700 p-4">JFK Walk Times</h2>
             <div class="px-4 pb-2">
                 <select class="form-select w-full"
-                        hx-get="/jfk-times?type=security"
-                        hx-target="#jfk-content"
+                        hx-get="/jfk-times?type=walk"
+                        hx-target="#jfk-walk-content"
                         hx-include="[name='page'], [name='per_page']"
                         name="terminal">
                     <option value="">All Terminals</option>
@@ -20,7 +21,7 @@
                 </select>
             </div>
         </div>
-        <div class="p-4 space-y-4" id="jfk-content">
+        <div class="p-4 space-y-4" id="jfk-walk-content">
             {% include 'partials/jfk_times.html' %}
         </div>
     </div>
@@ -28,11 +29,11 @@
     <!-- LGA Card -->
     <div class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="border-b border-gray-200 bg-green-50">
-            <h2 class="text-xl font-semibold text-green-700 p-4">LGA Security Wait Times</h2>
+            <h2 class="text-xl font-semibold text-green-700 p-4">LGA Walk Times</h2>
             <div class="px-4 pb-2">
                 <select class="form-select w-full"
-                        hx-get="/lga-times?type=security"
-                        hx-target="#lga-content"
+                        hx-get="/lga-times?type=walk"
+                        hx-target="#lga-walk-content"
                         hx-include="[name='page'], [name='per_page']"
                         name="terminal">
                     <option value="">All Terminals</option>
@@ -42,7 +43,7 @@
                 </select>
             </div>
         </div>
-        <div class="p-4 space-y-4" id="lga-content">
+        <div class="p-4 space-y-4" id="lga-walk-content">
             {% include 'partials/lga_times.html' %}
         </div>
     </div>
@@ -50,11 +51,11 @@
     <!-- EWR Card -->
     <div class="wait-time-card bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="border-b border-gray-200 bg-red-50">
-            <h2 class="text-xl font-semibold text-red-700 p-4">EWR Security Wait Times</h2>
+            <h2 class="text-xl font-semibold text-red-700 p-4">EWR Walk Times</h2>
             <div class="px-4 pb-2">
                 <select class="form-select w-full"
-                        hx-get="/ewr-times?type=security"
-                        hx-target="#ewr-content"
+                        hx-get="/ewr-times?type=walk"
+                        hx-target="#ewr-walk-content"
                         hx-include="[name='page'], [name='per_page']"
                         name="terminal">
                     <option value="">All Terminals</option>
@@ -64,7 +65,7 @@
                 </select>
             </div>
         </div>
-        <div class="p-4 space-y-4" id="ewr-content">
+        <div class="p-4 space-y-4" id="ewr-walk-content">
             {% include 'partials/ewr_times.html' %}
         </div>
     </div>

@@ -1,0 +1,116 @@
+2024-11-13 10:46:06,967 - ERROR - Failed to connect to MongoDB: The "dnspython" module must be installed to use mongodb+srv:// URIs. To fix this error install pymongo with the srv extra:
+ /Users/nandupokhrel/Desktop/Projects/tsavail/.venv/bin/python3 -m pip install "pymongo[srv]"
+2024-11-13 10:46:06,973 - ERROR - Error closing ewr MongoDB connection: 'EWRStorage' object has no attribute 'client'
+2024-11-13 10:46:27,799 - ERROR - Failed to connect to MongoDB: The "dnspython" module must be installed to use mongodb+srv:// URIs. To fix this error install pymongo with the srv extra:
+ /Users/nandupokhrel/Desktop/Projects/tsavail/.venv/bin/python3 -m pip install "pymongo[srv]"
+2024-11-13 10:46:27,805 - ERROR - Error closing ewr MongoDB connection: 'EWRStorage' object has no attribute 'client'
+2024-11-13 10:46:43,746 - INFO - Successfully connected to MongoDB database: ewr_airport
+2024-11-13 10:46:46,133 - INFO - Starting ewr security wait time scrape
+2024-11-13 10:46:51,042 - INFO - Security times for Terminal A: General=7, TSA Pre✓=No Wait
+2024-11-13 10:46:51,073 - INFO - Security times for Terminal B: General=11, TSA Pre✓=1
+2024-11-13 10:46:51,105 - INFO - Security times for Terminal B: General=10, TSA Pre✓=
+2024-11-13 10:46:51,136 - INFO - Security times for Terminal B: General=35, TSA Pre✓=
+2024-11-13 10:46:51,168 - INFO - Security times for Terminal C: General=4, TSA Pre✓=2
+2024-11-13 10:46:51,170 - INFO - Saved 5 entries to data/security_times_20241113_104651.json
+2024-11-13 10:46:51,170 - INFO - 
+Saving EWR security wait time data to MongoDB...
+2024-11-13 10:46:51,211 - INFO - Inserted 5 ewr security wait time records
+2024-11-13 10:46:51,211 - INFO - Successfully saved EWR security wait time data
+2024-11-13 10:46:51,703 - INFO - Starting ewr walk time scrape
+2024-11-13 10:46:56,643 - INFO - Saved 7 entries to data/walk_times_20241113_104656.json
+2024-11-13 10:46:56,643 - INFO - 
+Saving EWR walk time data to MongoDB...
+2024-11-13 10:46:56,688 - INFO - Inserted 7 ewr walk time records
+2024-11-13 10:46:56,688 - INFO - Successfully saved EWR walk time data
+2024-11-13 10:46:56,814 - INFO - Closed ewr MongoDB connection
+2024-11-13 10:46:57,482 - INFO - Successfully connected to MongoDB database: lga_airport
+2024-11-13 10:46:57,926 - INFO - Starting ewr security wait time scrape
+2024-11-13 10:47:02,744 - INFO - Security times for Terminal A: General=7, TSA Pre✓=No Wait
+2024-11-13 10:47:02,776 - INFO - Security times for Terminal B: General=11, TSA Pre✓=1
+2024-11-13 10:47:02,806 - INFO - Security times for Terminal B: General=10, TSA Pre✓=
+2024-11-13 10:47:02,837 - INFO - Security times for Terminal B: General=35, TSA Pre✓=
+2024-11-13 10:47:02,867 - INFO - Security times for Terminal C: General=4, TSA Pre✓=2
+2024-11-13 10:47:02,868 - INFO - Saved 5 entries to data/security_times_20241113_104702.json
+2024-11-13 10:47:02,868 - INFO - 
+Saving LGA security wait time data to MongoDB...
+2024-11-13 10:47:02,909 - INFO - Inserted 5 lga security wait time records
+2024-11-13 10:47:02,909 - INFO - Successfully saved LGA security wait time data
+2024-11-13 10:47:03,391 - INFO - Starting ewr walk time scrape
+2024-11-13 10:47:07,712 - INFO - Saved 7 entries to data/walk_times_20241113_104707.json
+2024-11-13 10:47:07,712 - INFO - 
+Saving LGA walk time data to MongoDB...
+2024-11-13 10:47:07,754 - INFO - Inserted 7 lga walk time records
+2024-11-13 10:47:07,755 - INFO - Successfully saved LGA walk time data
+2024-11-13 10:47:07,882 - INFO - Closed lga MongoDB connection
+2024-11-13 10:48:06,996 - INFO - Successfully connected to MongoDB database: ewr_airport
+2024-11-13 10:48:07,462 - INFO - Starting ewr security wait time scrape
+2024-11-13 10:48:11,839 - INFO - Security times for Terminal A: General=8, TSA Pre✓=1
+2024-11-13 10:48:11,868 - INFO - Security times for Terminal B: General=10, TSA Pre✓=1
+2024-11-13 10:48:11,896 - INFO - Security times for Terminal B: General=9, TSA Pre✓=
+2024-11-13 10:48:11,924 - INFO - Security times for Terminal B: General=39, TSA Pre✓=
+2024-11-13 10:48:11,953 - INFO - Security times for Terminal C: General=6, TSA Pre✓=2
+2024-11-13 10:48:11,954 - INFO - Saved 5 entries to data/security_times_20241113_104811.json
+2024-11-13 10:48:11,954 - INFO - 
+Saving EWR security wait time data to MongoDB...
+2024-11-13 10:48:11,989 - INFO - Inserted 5 ewr security wait time records
+2024-11-13 10:48:11,990 - INFO - Successfully saved EWR security wait time data
+2024-11-13 10:48:12,469 - INFO - Starting ewr walk time scrape
+2024-11-13 10:48:18,189 - INFO - Saved 7 entries to data/walk_times_20241113_104818.json
+2024-11-13 10:48:18,189 - INFO - 
+Saving EWR walk time data to MongoDB...
+2024-11-13 10:48:18,223 - INFO - Inserted 7 ewr walk time records
+2024-11-13 10:48:18,223 - INFO - Successfully saved EWR walk time data
+2024-11-13 10:48:18,348 - INFO - Closed ewr MongoDB connection
+2024-11-13 10:48:19,103 - INFO - Successfully connected to MongoDB database: lga_airport
+2024-11-13 10:48:19,535 - INFO - Starting ewr security wait time scrape
+2024-11-13 10:48:23,770 - INFO - Security times for Terminal A: General=8, TSA Pre✓=1
+2024-11-13 10:48:23,802 - INFO - Security times for Terminal B: General=10, TSA Pre✓=1
+2024-11-13 10:48:23,831 - INFO - Security times for Terminal B: General=9, TSA Pre✓=
+2024-11-13 10:48:23,859 - INFO - Security times for Terminal B: General=39, TSA Pre✓=
+2024-11-13 10:48:23,887 - INFO - Security times for Terminal C: General=6, TSA Pre✓=2
+2024-11-13 10:48:23,887 - INFO - Saved 5 entries to data/security_times_20241113_104823.json
+2024-11-13 10:48:23,887 - INFO - 
+Saving LGA security wait time data to MongoDB...
+2024-11-13 10:48:23,921 - INFO - Inserted 5 lga security wait time records
+2024-11-13 10:48:23,922 - INFO - Successfully saved LGA security wait time data
+2024-11-13 10:48:24,403 - INFO - Starting ewr walk time scrape
+2024-11-13 10:48:28,486 - INFO - Saved 7 entries to data/walk_times_20241113_104828.json
+2024-11-13 10:48:28,486 - INFO - 
+Saving LGA walk time data to MongoDB...
+2024-11-13 10:48:28,523 - INFO - Inserted 7 lga walk time records
+2024-11-13 10:48:28,525 - INFO - Successfully saved LGA walk time data
+2024-11-13 10:48:28,650 - INFO - Closed lga MongoDB connection
+2024-11-13 13:31:23,524 - INFO - Successfully connected to MongoDB database: ewr_airport
+2024-11-13 13:31:24,737 - INFO - Starting ewr security wait time scrape
+2024-11-13 13:31:29,305 - INFO - Security times for Terminal A: General=1, TSA Pre✓=2
+2024-11-13 13:31:29,337 - INFO - Security times for Terminal B: General=12, TSA Pre✓=1
+2024-11-13 13:31:29,369 - INFO - Security times for Terminal B: General=5, TSA Pre✓=
+2024-11-13 13:31:29,398 - INFO - Security times for Terminal B: General=17, TSA Pre✓=
+2024-11-13 13:31:29,426 - INFO - Security times for Terminal C: General=10, TSA Pre✓=3
+2024-11-13 13:31:29,426 - INFO - 
+Saving EWR security wait time data to MongoDB...
+2024-11-13 13:31:29,469 - INFO - Inserted 5 ewr security wait time records
+2024-11-13 13:31:29,469 - INFO - Successfully saved EWR security wait time data
+2024-11-13 13:31:29,958 - INFO - Starting ewr walk time scrape
+2024-11-13 13:31:35,000 - INFO - 
+Saving EWR walk time data to MongoDB...
+2024-11-13 13:31:35,046 - INFO - Inserted 7 ewr walk time records
+2024-11-13 13:31:35,046 - INFO - Successfully saved EWR walk time data
+2024-11-13 13:31:35,168 - INFO - Closed ewr MongoDB connection
+2024-11-13 13:31:35,853 - INFO - Successfully connected to MongoDB database: lga_airport
+2024-11-13 13:31:36,304 - INFO - Starting ewr security wait time scrape
+2024-11-13 13:31:40,780 - INFO - Security times for Terminal A: General=1, TSA Pre✓=2
+2024-11-13 13:31:40,810 - INFO - Security times for Terminal B: General=12, TSA Pre✓=1
+2024-11-13 13:31:40,843 - INFO - Security times for Terminal B: General=5, TSA Pre✓=
+2024-11-13 13:31:40,874 - INFO - Security times for Terminal B: General=17, TSA Pre✓=
+2024-11-13 13:31:40,903 - INFO - Security times for Terminal C: General=10, TSA Pre✓=3
+2024-11-13 13:31:40,903 - INFO - 
+Saving LGA security wait time data to MongoDB...
+2024-11-13 13:31:40,945 - INFO - Inserted 5 lga security wait time records
+2024-11-13 13:31:40,945 - INFO - Successfully saved LGA security wait time data
+2024-11-13 13:31:41,446 - INFO - Starting ewr walk time scrape
+2024-11-13 13:31:45,410 - INFO - 
+Saving LGA walk time data to MongoDB...
+2024-11-13 13:31:45,458 - INFO - Inserted 7 lga walk time records
+2024-11-13 13:31:45,459 - INFO - Successfully saved LGA walk time data
+2024-11-13 13:31:45,584 - INFO - Closed lga MongoDB connection

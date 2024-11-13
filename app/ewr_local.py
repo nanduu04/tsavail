@@ -1,10 +1,9 @@
-from app.storage import LGAStorage
+from storage import EWRStorage, LGAStorage
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-import json
 from datetime import datetime
 import logging
 from pathlib import Path
@@ -18,32 +17,29 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler('lga_scraper.log')
+        logging.FileHandler('ewr_scraper.log')
     ]
 )
 logger = logging.getLogger(__name__)
 
-class LGAScraperException(Exception):
-    """Custom exception for LGA scraper specific errors"""
+class ewrScraperException(Exception):
+    """Custom exception for ewr scraper specific errors"""
     pass
 
-class BaseLGAScraper(ABC):
-    """Base class for LGA scrapers with common functionality"""
+class BaseewrScraper(ABC):
+    """Base class for ewr scrapers with common functionality"""
     
-    BASE_URL = 'https://www.laguardiaairport.com/'
+    BASE_URL = 'https://www.newarkairport.com/'
     TIMEOUT = 10
     
-    def __init__(self, headless: bool = True, output_dir: str = "data"):
+    def __init__(self, headless: bool = True):
         """
         Initialize the base scraper with configuration options.
         
         Args:
             headless (bool): Whether to run Chrome in headless mode
-            output_dir (str): Directory to save output files
         """
         self.headless = headless
-        self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(parents=True, exist_ok=True)
         self.driver = None
         self.wait = None
     
@@ -67,22 +63,12 @@ class BaseLGAScraper(ABC):
         if self.driver:
             self.driver.quit()
     
-    def _save_to_json(self, data: List[Dict], prefix: str):
-        """Save scraped data to JSON file"""
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = self.output_dir / f'{prefix}_{timestamp}.json'
-        
-        with open(filename, 'w') as f:
-            json.dump(data, f, indent=4)
-        
-        logger.info(f"Saved {len(data)} entries to {filename}")
-    
     @abstractmethod
     def scrape(self):
         """Abstract method to be implemented by child classes"""
         pass
 
-class LGASecurityWaitTimeScraper(BaseLGAScraper):
+class ewrSecurityWaitTimeScraper(BaseewrScraper):
     """Class to handle scraping of LaGuardia Airport security wait times"""
     
     def _clean_time(self, time_str: str) -> str:
@@ -135,7 +121,7 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
             or None if scraping fails
         """
         try:
-            logger.info("Starting LGA security wait time scrape")
+            logger.info("Starting ewr security wait time scrape")
             self.driver.get(self.BASE_URL)
             
             # Add a small delay to ensure page loads completely
@@ -183,15 +169,13 @@ class LGASecurityWaitTimeScraper(BaseLGAScraper):
                     logger.error(f"Unexpected error processing security row: {str(e)}")
                     continue
             
-            if security_data:
-                self._save_to_json(security_data, "security_times")
             return security_data
             
         except Exception as e:
             logger.error(f"Error in security wait time scraper: {str(e)}", exc_info=True)
             return None
 
-class LGAWalkTimeScraper(BaseLGAScraper):
+class ewrWalkTimeScraper(BaseewrScraper):
     """Class to handle scraping of LaGuardia Airport walk times"""
     
     def _clean_time(self, time_str: str) -> str:
@@ -207,7 +191,7 @@ class LGAWalkTimeScraper(BaseLGAScraper):
             or None if scraping fails
         """
         try:
-            logger.info("Starting LGA walk time scrape")
+            logger.info("Starting ewr walk time scrape")
             self.driver.get(self.BASE_URL)
             
             # Add a small delay to ensure page loads completely
@@ -258,8 +242,6 @@ class LGAWalkTimeScraper(BaseLGAScraper):
                     logger.error(f"Error processing terminal: {str(e)}")
                     continue
             
-            if walk_times:
-                self._save_to_json(walk_times, "walk_times")
             return walk_times
             
         except Exception as e:
@@ -267,25 +249,44 @@ class LGAWalkTimeScraper(BaseLGAScraper):
             return None
 
 
-def main_lga():
-    output_dir = Path("data")
-    output_dir.mkdir(exist_ok=True)
+def main_ewr():
+    # Initialize EWR MongoDB storage
+    db_storage = EWRStorage()
     
+    with ewrSecurityWaitTimeScraper(headless=True) as security_scraper:
+        security_data = security_scraper.scrape()
+        if security_data:
+            logger.info("\nSaving EWR security wait time data to MongoDB...")
+            db_storage.create_security_times(security_data)
+            logger.info("Successfully saved EWR security wait time data")
+    
+    with ewrWalkTimeScraper(headless=True) as walk_scraper:
+        walk_data = walk_scraper.scrape()
+        if walk_data:
+            logger.info("\nSaving EWR walk time data to MongoDB...")
+            db_storage.create_walk_times(walk_data)
+            logger.info("Successfully saved EWR walk time data")
+
+
+def main_lga():
     # Initialize LGA MongoDB storage
     db_storage = LGAStorage()
     
-    with LGASecurityWaitTimeScraper(headless=True, output_dir=output_dir) as security_scraper:
+    with ewrSecurityWaitTimeScraper(headless=True) as security_scraper:
         security_data = security_scraper.scrape()
         if security_data:
             logger.info("\nSaving LGA security wait time data to MongoDB...")
             db_storage.create_security_times(security_data)
             logger.info("Successfully saved LGA security wait time data")
     
-    with LGAWalkTimeScraper(headless=True, output_dir=output_dir) as walk_scraper:
+    with ewrWalkTimeScraper(headless=True) as walk_scraper:
         walk_data = walk_scraper.scrape()
         if walk_data:
             logger.info("\nSaving LGA walk time data to MongoDB...")
             db_storage.create_walk_times(walk_data)
             logger.info("Successfully saved LGA walk time data")
+
+
 if __name__ == "__main__":
+    main_ewr()
     main_lga()

@@ -14,3 +14,9 @@ venv/
 dist/
 build/
 *.egg-info/
+
+.env/
+
+.vscode/
+
+.github/
