@@ -1,0 +1,44 @@
+[
+    {
+        "terminal": "Terminal A",
+        "gate": "All Gates",
+        "walk_time": "2",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal B",
+        "gate": "Gates 11-31",
+        "walk_time": "4-6",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal B",
+        "gate": "Gates 40-59",
+        "walk_time": "6-9",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal C",
+        "gate": "Gates 60-69",
+        "walk_time": "9-11",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal C",
+        "gate": "Gates 70-79",
+        "walk_time": "5-7",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal C",
+        "gate": "Gates 80-89",
+        "walk_time": "3-5",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    },
+    {
+        "terminal": "Terminal C",
+        "gate": "Gates 90-99",
+        "walk_time": "5-10",
+        "timestamp": "2024-11-11T16:17:49.664725"
+    }
+]
