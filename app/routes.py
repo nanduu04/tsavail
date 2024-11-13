@@ -1,9 +1,12 @@
 from flask import Blueprint, jsonify, request, render_template
-from datetime import datetime, timedelta
 from app.storage import LGAStorage, JFKStorage, EWRStorage
 from bson import json_util
 import json
 import logging
+from datetime import datetime
+from dateutil.parser import parse
+from flask import Blueprint, jsonify, request, render_template
+import humanize
 
 # Set up logging
 logging.basicConfig(
@@ -19,19 +22,38 @@ lga_storage = LGAStorage()
 jfk_storage = JFKStorage()
 ewr_storage = EWRStorage()
 
+def init_jinja_filters(app):
+    """Initialize custom Jinja filters"""
+    
+    @app.template_filter('timesince')
+    def timesince_filter(value):
+        """Convert timestamp to "time ago" format"""
+        if not value:
+            return 'N/A'
+        try:
+            if isinstance(value, str):
+                dt = parse(value)
+            else:
+                dt = value
+            now = datetime.utcnow()
+            return humanize.naturaltime(now - dt)
+        except Exception as e:
+            return 'N/A'
+
+    return app
+
 def parse_mongo_data(data):
     """Convert MongoDB data to JSON-serializable format"""
     return json.loads(json_util.dumps(data))
 
-def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=10):
+def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=4):  # Changed default per_page to 4
     """Helper function to get paginated data with terminal filtering"""
     try:
         skip = (page - 1) * per_page
         
         # Create query filter
         query_filter = {}
-        if terminal:
-            # Format terminal string to match database format
+        if terminal and terminal != 'all':  # Added check for 'all'
             terminal_query = f"Terminal {terminal}"
             logger.info(f"Looking for terminal: {terminal_query}")
             query_filter['terminal'] = terminal_query
@@ -51,9 +73,6 @@ def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=10):
         data = list(cursor.sort('timestamp', -1).skip(skip).limit(per_page))
         
         logger.info(f"Found {total_count} total documents, returning {len(data)} for page {page}")
-        if data:
-            logger.debug(f"Sample document: {data[0]}")
-            
         return data, total_count
     except Exception as e:
         logger.error(f"Error in get_paginated_data: {str(e)}", exc_info=True)
@@ -69,21 +88,13 @@ def wait_times():
     """Security wait times dashboard"""
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        terminal = request.args.get('terminal')
+        per_page = int(request.args.get('per_page', 4))  # Changed default to 4
+        terminal = request.args.get('terminal', 'all')  # Default to 'all'
 
         # Get security data for each airport
         jfk_data, jfk_count = get_paginated_data(jfk_storage, 'security', terminal, page, per_page)
         lga_data, lga_count = get_paginated_data(lga_storage, 'security', terminal, page, per_page)
         ewr_data, ewr_count = get_paginated_data(ewr_storage, 'security', terminal, page, per_page)
-
-        logger.info(f"JFK Security Data Count: {jfk_count}")
-        logger.info(f"LGA Security Data Count: {lga_count}")
-        logger.info(f"EWR Security Data Count: {ewr_count}")
-
-        # Calculate total pages based on the highest count
-        total_count = max(jfk_count, lga_count, ewr_count)
-        total_pages = (total_count + per_page - 1) // per_page
 
         return render_template('wait_times.html',
                              jfk_data=parse_mongo_data(jfk_data),
@@ -91,7 +102,7 @@ def wait_times():
                              ewr_data=parse_mongo_data(ewr_data),
                              page=page,
                              per_page=per_page,
-                             total_pages=total_pages,
+                             total_pages=max(1, (max(jfk_count, lga_count, ewr_count) + per_page - 1) // per_page),
                              selected_terminal=terminal)
     except Exception as e:
         logger.error(f"Error in wait_times: {str(e)}", exc_info=True)
@@ -102,8 +113,10 @@ def walk_times():
     """Walk times dashboard"""
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        terminal = request.args.get('terminal')
+        per_page = int(request.args.get('per_page', 4))  # Changed to 4
+        terminal = request.args.get('terminal', 'all')  # Default to 'all'
+
+        logger.info(f"Walk Times Request - Page: {page}, Per Page: {per_page}, Terminal: {terminal}")
 
         # Get walk data for each airport
         jfk_data, jfk_count = get_paginated_data(jfk_storage, 'walk', terminal, page, per_page)
@@ -116,16 +129,25 @@ def walk_times():
 
         # Calculate total pages based on the highest count
         total_count = max(jfk_count, lga_count, ewr_count)
-        total_pages = (total_count + per_page - 1) // per_page
+        total_pages = max(1, (total_count + per_page - 1) // per_page)  # Ensure at least 1 page
+
+        parsed_jfk = parse_mongo_data(jfk_data)
+        parsed_lga = parse_mongo_data(lga_data)
+        parsed_ewr = parse_mongo_data(ewr_data)
+
+        logger.debug(f"Parsed JFK Walk Data: {parsed_jfk}")
+        logger.debug(f"Parsed LGA Walk Data: {parsed_lga}")
+        logger.debug(f"Parsed EWR Walk Data: {parsed_ewr}")
 
         return render_template('walk_times.html',
-                             jfk_data=parse_mongo_data(jfk_data),
-                             lga_data=parse_mongo_data(lga_data),
-                             ewr_data=parse_mongo_data(ewr_data),
+                             jfk_data=parsed_jfk,
+                             lga_data=parsed_lga,
+                             ewr_data=parsed_ewr,
                              page=page,
                              per_page=per_page,
                              total_pages=total_pages,
-                             selected_terminal=terminal)
+                             selected_terminal=terminal,
+                             data_type='walk')  # Added data_type
     except Exception as e:
         logger.error(f"Error in walk_times: {str(e)}", exc_info=True)
         return render_template('error.html', error=str(e))
@@ -136,8 +158,8 @@ def jfk_times():
     try:
         data_type = request.args.get('type', 'security')
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        terminal = request.args.get('terminal')
+        per_page = int(request.args.get('per_page', 4))
+        terminal = request.args.get('terminal', 'all')
         
         logger.info(f"JFK request - Type: {data_type}, Terminal: {terminal}")
         
@@ -152,7 +174,7 @@ def jfk_times():
                              data_type=data_type,
                              page=page,
                              per_page=per_page,
-                             total_pages=(total_count + per_page - 1) // per_page,
+                             total_pages=max(1, (total_count + per_page - 1) // per_page),
                              selected_terminal=terminal)
     except Exception as e:
         logger.error(f"Error in JFK times: {str(e)}", exc_info=True)
@@ -164,8 +186,8 @@ def lga_times():
     try:
         data_type = request.args.get('type', 'security')
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        terminal = request.args.get('terminal')
+        per_page = int(request.args.get('per_page', 4))
+        terminal = request.args.get('terminal', 'all')
         
         logger.info(f"LGA request - Type: {data_type}, Terminal: {terminal}")
         
@@ -180,7 +202,7 @@ def lga_times():
                              data_type=data_type,
                              page=page,
                              per_page=per_page,
-                             total_pages=(total_count + per_page - 1) // per_page,
+                             total_pages=max(1, (total_count + per_page - 1) // per_page),
                              selected_terminal=terminal)
     except Exception as e:
         logger.error(f"Error in LGA times: {str(e)}", exc_info=True)
@@ -192,8 +214,8 @@ def ewr_times():
     try:
         data_type = request.args.get('type', 'security')
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        terminal = request.args.get('terminal')
+        per_page = int(request.args.get('per_page', 4))
+        terminal = request.args.get('terminal', 'all')
         
         logger.info(f"EWR request - Type: {data_type}, Terminal: {terminal}")
         
@@ -208,7 +230,7 @@ def ewr_times():
                              data_type=data_type,
                              page=page,
                              per_page=per_page,
-                             total_pages=(total_count + per_page - 1) // per_page,
+                             total_pages=max(1, (total_count + per_page - 1) // per_page),
                              selected_terminal=terminal)
     except Exception as e:
         logger.error(f"Error in EWR times: {str(e)}", exc_info=True)

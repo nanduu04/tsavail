@@ -10,14 +10,15 @@
     {% endif %}
   </div>
   {% else %}
-  <div class="text-sm text-gray-600">Gate {{ item.gate }}</div>
+  <div class="text-sm text-gray-600">
+    <strong>Gate:</strong> {{ item.gate }}
+  </div>
   <div class="text-sm font-medium text-red-600">
     {{ item.walk_time }} min walk
   </div>
   {% endif %}
   <div class="text-xs text-gray-500 mt-2">
-    Updated: {{ item.timestamp.split('T')[1].split('.')[0] if item.timestamp
-    else 'N/A' }}
+    Updated: {{ item.timestamp|timesince }}
   </div>
 </div>
 {% endfor %}

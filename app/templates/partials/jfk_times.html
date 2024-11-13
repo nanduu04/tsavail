@@ -1,6 +1,6 @@
 {% if data %} {% for item in data %}
 <div class="border-b border-gray-100 last:border-0 pb-3 last:pb-0">
-  <div class="font-medium text-gray-800 mb-2">Terminal {{ item.terminal }}</div>
+  <div class="font-medium text-gray-800 mb-2">{{ item.terminal }}</div>
   {% if data_type == 'security' %}
   <div class="flex flex-col space-y-1">
     {% if item.general_line %}
@@ -10,14 +10,15 @@
     {% endif %}
   </div>
   {% else %}
-  <div class="text-sm text-gray-600">Gate {{ item.gate }}</div>
+  <div class="text-sm text-gray-600">
+    <strong>Gate:</strong> {{ item.gate }}
+  </div>
   <div class="text-sm font-medium text-blue-600">
     {{ item.walk_time }} min walk
   </div>
   {% endif %}
   <div class="text-xs text-gray-500 mt-2">
-    Updated: {{ item.timestamp.split('T')[1].split('.')[0] if item.timestamp
-    else 'N/A' }}
+    Updated: {{ item.timestamp|timesince }}
   </div>
 </div>
 {% endfor %}
@@ -28,7 +29,7 @@
     <button
       class="px-2 py-1 text-xs bg-white border rounded hover:bg-gray-50"
       hx-get="/jfk-times?type={{ data_type }}&terminal={{ selected_terminal }}&page={{ page - 1 }}&per_page={{ per_page }}"
-      hx-target="#jfk-content"
+      hx-target="#{% if data_type == 'walk' %}jfk-walk-content{% else %}jfk-content{% endif %}"
     >
       Previous
     </button>
@@ -42,7 +43,7 @@
     <button
       class="px-2 py-1 text-xs bg-white border rounded hover:bg-gray-50"
       hx-get="/jfk-times?type={{ data_type }}&terminal={{ selected_terminal }}&page={{ page + 1 }}&per_page={{ per_page }}"
-      hx-target="#jfk-content"
+      hx-target="#{% if data_type == 'walk' %}jfk-walk-content{% else %}jfk-content{% endif %}"
     >
       Next
     </button>
