@@ -23,3 +23,37 @@ Saving JFK walk time data to MongoDB...
 2024-11-13 13:32:03,331 - INFO - Inserted 12 jfk walk time records
 2024-11-13 13:32:03,332 - INFO - Successfully saved JFK walk time data
 2024-11-13 13:32:03,456 - INFO - Closed jfk MongoDB connection
+2024-11-13 17:07:52,922 - INFO - Successfully connected to MongoDB database: jfk_airport
+2024-11-13 17:07:54,145 - INFO - Starting jfk security wait time scrape
+2024-11-13 17:07:58,457 - INFO - Security times for Terminal 1: General=12, TSA Pre✓=6
+2024-11-13 17:07:58,490 - INFO - Security times for Terminal 4: General=N/A, TSA Pre✓=N/A
+2024-11-13 17:07:58,522 - INFO - Security times for Terminal 5: General=12, TSA Pre✓=4
+2024-11-13 17:07:58,554 - INFO - Security times for Terminal 7: General=11, TSA Pre✓=
+2024-11-13 17:07:58,588 - INFO - Security times for Terminal 8: General=21, TSA Pre✓=10
+2024-11-13 17:07:58,588 - INFO - 
+Saving JFK security wait time data to MongoDB...
+2024-11-13 17:07:58,627 - INFO - Inserted 5 jfk security wait time records
+2024-11-13 17:07:58,627 - INFO - Successfully saved JFK security wait time data
+2024-11-13 17:07:59,113 - INFO - Starting jfk walk time scrape
+2024-11-13 17:08:03,201 - INFO - 
+Saving JFK walk time data to MongoDB...
+2024-11-13 17:08:03,247 - INFO - Inserted 12 jfk walk time records
+2024-11-13 17:08:03,247 - INFO - Successfully saved JFK walk time data
+2024-11-13 17:08:03,373 - INFO - Closed jfk MongoDB connection
+2024-11-13 17:11:32,464 - INFO - Successfully connected to MongoDB database: jfk_airport
+2024-11-13 17:11:33,091 - INFO - Starting jfk security wait time scrape
+2024-11-13 17:11:37,466 - INFO - Security times for Terminal 1: General=14, TSA Pre✓=3
+2024-11-13 17:11:37,501 - INFO - Security times for Terminal 4: General=N/A, TSA Pre✓=N/A
+2024-11-13 17:11:37,534 - INFO - Security times for Terminal 5: General=11, TSA Pre✓=5
+2024-11-13 17:11:37,568 - INFO - Security times for Terminal 7: General=11, TSA Pre✓=
+2024-11-13 17:11:37,603 - INFO - Security times for Terminal 8: General=18, TSA Pre✓=7
+2024-11-13 17:11:37,603 - INFO - 
+Saving JFK security wait time data to MongoDB...
+2024-11-13 17:11:37,638 - INFO - Inserted 5 jfk security wait time records
+2024-11-13 17:11:37,638 - INFO - Successfully saved JFK security wait time data
+2024-11-13 17:11:38,115 - INFO - Starting jfk walk time scrape
+2024-11-13 17:11:42,283 - INFO - 
+Saving JFK walk time data to MongoDB...
+2024-11-13 17:11:42,321 - INFO - Inserted 12 jfk walk time records
+2024-11-13 17:11:42,321 - INFO - Successfully saved JFK walk time data
+2024-11-13 17:11:42,444 - INFO - Closed jfk MongoDB connection

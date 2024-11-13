@@ -200,10 +200,6 @@ def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=4):
     except Exception as e:
         logger.error(f"Error in get_paginated_data: {str(e)}", exc_info=True)
         raise
-
-# def parse_mongo_data(data):
-#     """Convert MongoDB data to JSON-serializable format"""
-#     return json.loads(json_util.dumps(data))
     
 @main.route('/')
 def index():

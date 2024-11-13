@@ -1,0 +1,16 @@
+2024-11-13 18:43:37,126 - root - INFO - Successfully connected to MongoDB database: jfk_airport
+2024-11-13 18:43:37,126 - __main__ - INFO - Scheduler started. Running JFK scraper every 6 minutes...
+2024-11-13 18:43:37,126 - __main__ - INFO - Starting scheduled task...
+2024-11-13 18:43:38,377 - __main__ - INFO - Starting JFK security wait time scrape
+2024-11-13 18:43:44,018 - __main__ - INFO - Security times for Terminal 1: General=14, TSA Pre✓=6
+2024-11-13 18:43:44,049 - __main__ - INFO - Security times for Terminal 4: General=N/A, TSA Pre✓=N/A
+2024-11-13 18:43:44,089 - __main__ - INFO - Security times for Terminal 5: General=23, TSA Pre✓=6
+2024-11-13 18:43:44,124 - __main__ - INFO - Security times for Terminal 7: General=5, TSA Pre✓=
+2024-11-13 18:43:44,162 - __main__ - INFO - Security times for Terminal 8: General=20, TSA Pre✓=20
+2024-11-13 18:43:44,162 - __main__ - INFO - Saving JFK security wait time data to MongoDB...
+2024-11-13 18:43:44,201 - root - INFO - Inserted 5 jfk security wait time records
+2024-11-13 18:43:44,866 - __main__ - INFO - Starting JFK walk time scrape
+2024-11-13 18:43:49,408 - __main__ - INFO - Saving JFK walk time data to MongoDB...
+2024-11-13 18:43:49,451 - root - INFO - Inserted 12 jfk walk time records
+2024-11-13 18:43:49,549 - __main__ - INFO - Scheduled task completed successfully
+2024-11-13 18:44:43,007 - __main__ - INFO - Scheduler stopping...
