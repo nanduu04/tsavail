@@ -17,7 +17,7 @@
     {{ item.walk_time }} min walk
   </div>
   {% endif %}
-  <div class="text-xs text-gray-500 mt-2">
+  <div class="text-xs text-gray-500 mt-2 title="{{ item.timestamp|format_et_time }}"">
     Updated: {{ item.timestamp|timesince }}
   </div>
 </div>

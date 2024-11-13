@@ -1,12 +1,14 @@
 from flask import Blueprint, jsonify, request, render_template
 from app.storage import LGAStorage, JFKStorage, EWRStorage
-from bson import json_util
+from bson import json_util, Timestamp
 import json
 import logging
 from datetime import datetime
 from dateutil.parser import parse
 from flask import Blueprint, jsonify, request, render_template
 import humanize
+import pytz
+from typing import Union
 
 # Set up logging
 logging.basicConfig(
@@ -14,6 +16,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+ET_TZ = pytz.timezone('America/New_York')
 
 main = Blueprint('main', __name__)
 
@@ -21,45 +24,156 @@ main = Blueprint('main', __name__)
 lga_storage = LGAStorage()
 jfk_storage = JFKStorage()
 ewr_storage = EWRStorage()
-
 def init_jinja_filters(app):
     """Initialize custom Jinja filters"""
     
     @app.template_filter('timesince')
-    def timesince_filter(value):
-        """Convert timestamp to "time ago" format"""
+    def timesince_filter(value: Union[str, datetime, dict, None]) -> str:
+        """
+        Convert MongoDB ISODate timestamp to "time ago" format in Eastern Time
+        """
         if not value:
             return 'N/A'
+            
         try:
+            # Debug logging
+            logger.debug(f"Timesince input value: {value}")
+            logger.debug(f"Timesince input type: {type(value)}")
+            
+            # Parse the timestamp based on its type
             if isinstance(value, str):
-                dt = parse(value)
-            else:
+                # Handle ISO format string
+                dt = parse(value.replace('Z', '+00:00'))
+            elif isinstance(value, dict):
+                # Handle MongoDB ISODate format
+                if '$date' in value:
+                    # If it's in milliseconds
+                    if isinstance(value['$date'], int):
+                        dt = datetime.fromtimestamp(value['$date'] / 1000, pytz.UTC)
+                    else:
+                        # If it's an ISO string
+                        dt = parse(value['$date'])
+            elif isinstance(value, datetime):
                 dt = value
-            now = datetime.utcnow()
-            return humanize.naturaltime(now - dt)
+            else:
+                logger.error(f"Unsupported timestamp format: {type(value)}")
+                return 'N/A'
+            
+            # Ensure timezone awareness
+            if dt.tzinfo is None:
+                dt = pytz.UTC.localize(dt)
+            
+            # Convert to Eastern Time
+            et_tz = pytz.timezone('America/New_York')
+            et_time = dt.astimezone(et_tz)
+            
+            # Get current time in ET
+            now = datetime.now(et_tz)
+            
+            # Calculate time difference
+            diff = now - et_time
+            seconds = diff.total_seconds()
+            
+            # Format the time difference
+            if seconds < 60:
+                return "just now"
+            elif seconds < 3600:
+                minutes = int(seconds / 60)
+                return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+            elif seconds < 86400:
+                hours = int(seconds / 3600)
+                return f"{hours} hour{'s' if hours != 1 else ''} ago"
+            else:
+                days = int(seconds / 86400)
+                return f"{days} day{'s' if days != 1 else ''} ago"
+                
         except Exception as e:
+            logger.error(f"Error in timesince filter: {e}")
+            logger.error(f"Problem value: {value}")
+            logger.error(f"Value type: {type(value)}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return 'N/A'
+    
+    @app.template_filter('format_et_time')
+    def format_et_time(value: Union[str, datetime, dict, None]) -> str:
+        """
+        Format MongoDB ISODate timestamp to ET timezone with AM/PM
+        """
+        if not value:
+            return 'N/A'
+            
+        try:
+            # Parse the timestamp based on its type
+            if isinstance(value, str):
+                dt = parse(value.replace('Z', '+00:00'))
+            elif isinstance(value, dict):
+                if '$date' in value:
+                    if isinstance(value['$date'], int):
+                        dt = datetime.fromtimestamp(value['$date'] / 1000, pytz.UTC)
+                    else:
+                        dt = parse(value['$date'])
+            elif isinstance(value, datetime):
+                dt = value
+            else:
+                return 'N/A'
+            
+            # Ensure timezone awareness
+            if dt.tzinfo is None:
+                dt = pytz.UTC.localize(dt)
+            
+            # Convert to Eastern Time
+            et_tz = pytz.timezone('America/New_York')
+            et_time = dt.astimezone(et_tz)
+            
+            # Format the time with AM/PM
+            return et_time.strftime("%I:%M %p ET")
+            
+        except Exception as e:
+            logger.error(f"Error in format_et_time filter: {e}")
             return 'N/A'
 
-    return app
-
 def parse_mongo_data(data):
-    """Convert MongoDB data to JSON-serializable format"""
-    return json.loads(json_util.dumps(data))
+    """
+    Convert MongoDB data to JSON-serializable format while preserving datetime information
+    """
+    try:
+        # If it's a list, process each item
+        if isinstance(data, list):
+            return [parse_mongo_data(item) for item in data]
+        
+        # If it's a dictionary, process each value
+        if isinstance(data, dict):
+            processed_data = {}
+            for key, value in data.items():
+                if isinstance(value, datetime):
+                    # Convert datetime to dict format
+                    processed_data[key] = {
+                        "$date": value.astimezone(pytz.UTC).isoformat()
+                    }
+                else:
+                    processed_data[key] = parse_mongo_data(value)
+            return processed_data
+            
+        # Return other types as is
+        return data
+    except Exception as e:
+        logger.error(f"Error in parse_mongo_data: {e}")
+        return data
 
-def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=4):  # Changed default per_page to 4
+def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=4):
     """Helper function to get paginated data with terminal filtering"""
     try:
         skip = (page - 1) * per_page
         
         # Create query filter
         query_filter = {}
-        if terminal and terminal != 'all':  # Added check for 'all'
+        if terminal and terminal != 'all':
             terminal_query = f"Terminal {terminal}"
             logger.info(f"Looking for terminal: {terminal_query}")
             query_filter['terminal'] = terminal_query
             
         logger.info(f"Query filter: {query_filter}")
-        logger.info(f"Data type: {data_type}")
         
         # Get data based on type
         if data_type == 'security':
@@ -72,12 +186,25 @@ def get_paginated_data(storage, data_type, terminal=None, page=1, per_page=4):  
         # Sort and paginate
         data = list(cursor.sort('timestamp', -1).skip(skip).limit(per_page))
         
+        # Convert any UTC timestamps to ET
+        for doc in data:
+            if 'timestamp' in doc:
+                timestamp = doc['timestamp']
+                if isinstance(timestamp, datetime):
+                    if timestamp.tzinfo is None:
+                        timestamp = pytz.UTC.localize(timestamp)
+                    doc['timestamp'] = timestamp.astimezone(ET_TZ)
+        
         logger.info(f"Found {total_count} total documents, returning {len(data)} for page {page}")
         return data, total_count
     except Exception as e:
         logger.error(f"Error in get_paginated_data: {str(e)}", exc_info=True)
         raise
 
+# def parse_mongo_data(data):
+#     """Convert MongoDB data to JSON-serializable format"""
+#     return json.loads(json_util.dumps(data))
+    
 @main.route('/')
 def index():
     """Main dashboard page showing latest data"""
@@ -166,8 +293,6 @@ def jfk_times():
         data, total_count = get_paginated_data(
             jfk_storage, data_type, terminal, page, per_page
         )
-        
-        logger.info(f"JFK data count: {len(data)}")
         
         return render_template('partials/jfk_times.html',
                              data=parse_mongo_data(data),
