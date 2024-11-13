@@ -3,25 +3,21 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 import logging
-from abc import ABC, abstractmethod
 
 # Load environment variables
 load_dotenv()
 
-class BaseAirportStorage(ABC):
-    """Base class for airport-specific MongoDB storage"""
-    
-    def __init__(self, airport_code):
+class MongoDBStorage:
+    def __init__(self):
         # Set up logging
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s'
         )
         
-        self.airport_code = airport_code.lower()
         # Get MongoDB connection details from environment variables
         self.mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
-        self.database_name = f"{self.airport_code}_airport"
+        self.database_name = os.getenv('DATABASE_NAME', 'airport_timing')
         
         try:
             # Initialize MongoDB client
@@ -29,144 +25,129 @@ class BaseAirportStorage(ABC):
             self.db = self.client[self.database_name]
             
             # Initialize collections
-            self.security_collection = self.db['security_wait_times']
-            self.walk_collection = self.db['walk_times']
+            self.lga_collection = self.db['lga_data']
+            self.jfk_collection = self.db['jfk_data']
+            self.ewr_collection = self.db['ewr_data']
             
             # Create indexes for better query performance
-            self._create_indexes()
+            self.lga_collection.create_index("created_at")
+            self.jfk_collection.create_index("created_at")
+            self.ewr_collection.create_index("created_at")
             
             logging.info(f"Successfully connected to MongoDB database: {self.database_name}")
         except Exception as e:
             logging.error(f"Failed to connect to MongoDB: {str(e)}")
             raise
-    
-    def _create_indexes(self):
-        """Create indexes for collections"""
-        self.security_collection.create_index("timestamp")
-        self.security_collection.create_index("terminal")
-        self.walk_collection.create_index("timestamp")
-        self.walk_collection.create_index("terminal")
-        self.walk_collection.create_index("gate")
 
     def _add_metadata(self, data):
         """Add common metadata to documents"""
-        if 'timestamp' not in data:
-            data['timestamp'] = datetime.utcnow().isoformat()
         data['created_at'] = datetime.utcnow()
         data['updated_at'] = datetime.utcnow()
-        data['airport'] = self.airport_code
         return data
 
-    # Common methods for all airports
-    def create_security_times(self, security_data):
-        """Create new security wait time entries"""
+    # LGA Methods
+    def create_lga_data(self, lga_data):
+        """Create a new LGA data entry"""
         try:
-            if isinstance(security_data, list):
-                documents = [self._add_metadata(data.copy()) for data in security_data]
-                result = self.security_collection.insert_many(documents)
-                logging.info(f"Inserted {len(result.inserted_ids)} {self.airport_code} security wait time records")
-                return documents
-            else:
-                document = self._add_metadata(security_data.copy())
-                result = self.security_collection.insert_one(document)
-                logging.info(f"Inserted {self.airport_code} security wait time with ID: {result.inserted_id}")
-                return document
+            lga_data = self._add_metadata(lga_data)
+            result = self.lga_collection.insert_one(lga_data)
+            logging.info(f"Inserted LGA data with ID: {result.inserted_id}")
+            return lga_data
         except Exception as e:
-            logging.error(f"Error creating {self.airport_code} security wait time data: {str(e)}")
+            logging.error(f"Error creating LGA data: {str(e)}")
             raise
 
-    def create_walk_times(self, walk_data):
-        """Create new walk time entries"""
+    def get_lga_data(self, limit=100, skip=0):
+        """Get LGA data with pagination"""
         try:
-            if isinstance(walk_data, list):
-                documents = [self._add_metadata(data.copy()) for data in walk_data]
-                result = self.walk_collection.insert_many(documents)
-                logging.info(f"Inserted {len(result.inserted_ids)} {self.airport_code} walk time records")
-                return documents
-            else:
-                document = self._add_metadata(walk_data.copy())
-                result = self.walk_collection.insert_one(document)
-                logging.info(f"Inserted {self.airport_code} walk time with ID: {result.inserted_id}")
-                return document
-        except Exception as e:
-            logging.error(f"Error creating {self.airport_code} walk time data: {str(e)}")
-            raise
-
-    # Query methods
-    def get_security_times(self, limit=100, skip=0):
-        """Get security wait times with pagination"""
-        try:
-            cursor = self.security_collection.find({}) \
-                        .sort('timestamp', -1) \
+            cursor = self.lga_collection.find({}) \
+                        .sort('created_at', -1) \
                         .skip(skip) \
                         .limit(limit)
             return list(cursor)
         except Exception as e:
-            logging.error(f"Error retrieving {self.airport_code} security wait times: {str(e)}")
+            logging.error(f"Error retrieving LGA data: {str(e)}")
             raise
 
-    def get_walk_times(self, limit=100, skip=0):
-        """Get walk times with pagination"""
+    # JFK Methods
+    def create_jfk_data(self, jfk_data):
+        """Create a new JFK data entry"""
         try:
-            cursor = self.walk_collection.find({}) \
-                        .sort('timestamp', -1) \
+            jfk_data = self._add_metadata(jfk_data)
+            result = self.jfk_collection.insert_one(jfk_data)
+            logging.info(f"Inserted JFK data with ID: {result.inserted_id}")
+            return jfk_data
+        except Exception as e:
+            logging.error(f"Error creating JFK data: {str(e)}")
+            raise
+
+    def get_jfk_data(self, limit=100, skip=0):
+        """Get JFK data with pagination"""
+        try:
+            cursor = self.jfk_collection.find({}) \
+                        .sort('created_at', -1) \
                         .skip(skip) \
                         .limit(limit)
             return list(cursor)
         except Exception as e:
-            logging.error(f"Error retrieving {self.airport_code} walk times: {str(e)}")
+            logging.error(f"Error retrieving JFK data: {str(e)}")
             raise
 
-    def get_latest_data(self, data_type='all'):
-        """Get the most recent data for security times, walk times, or both"""
+    # EWR Methods
+    def create_ewr_data(self, ewr_data):
+        """Create a new EWR data entry"""
         try:
-            result = {}
-            if data_type in ['all', 'security']:
-                result['security'] = self.security_collection.find_one(
-                    {}, sort=[('timestamp', -1)]
-                )
-            if data_type in ['all', 'walk']:
-                result['walk'] = self.walk_collection.find_one(
-                    {}, sort=[('timestamp', -1)]
-                )
-            return result if data_type == 'all' else result.get(data_type)
+            ewr_data = self._add_metadata(ewr_data)
+            result = self.ewr_collection.insert_one(ewr_data)
+            logging.info(f"Inserted EWR data with ID: {result.inserted_id}")
+            return ewr_data
         except Exception as e:
-            logging.error(f"Error retrieving {self.airport_code} latest data: {str(e)}")
+            logging.error(f"Error creating EWR data: {str(e)}")
             raise
 
-    def get_data_by_date_range(self, data_type, start_date, end_date):
-        """Get data within a date range"""
+    def get_ewr_data(self, limit=100, skip=0):
+        """Get EWR data with pagination"""
         try:
-            collection = self.security_collection if data_type == 'security' else self.walk_collection
+            cursor = self.ewr_collection.find({}) \
+                        .sort('created_at', -1) \
+                        .skip(skip) \
+                        .limit(limit)
+            return list(cursor)
+        except Exception as e:
+            logging.error(f"Error retrieving EWR data: {str(e)}")
+            raise
+
+    # Additional utility methods
+    def get_latest_data(self, airport):
+        """Get the most recent data for a specific airport"""
+        try:
+            collection = getattr(self, f"{airport.lower()}_collection")
+            result = collection.find_one({}, sort=[('created_at', -1)])
+            return result
+        except Exception as e:
+            logging.error(f"Error retrieving latest {airport} data: {str(e)}")
+            raise
+
+    def get_data_by_date_range(self, airport, start_date, end_date):
+        """Get data for a specific airport within a date range"""
+        try:
+            collection = getattr(self, f"{airport.lower()}_collection")
             query = {
-                'timestamp': {
+                'created_at': {
                     '$gte': start_date,
                     '$lte': end_date
                 }
             }
-            cursor = collection.find(query).sort('timestamp', -1)
+            cursor = collection.find(query).sort('created_at', -1)
             return list(cursor)
         except Exception as e:
-            logging.error(f"Error retrieving {self.airport_code} data by date range: {str(e)}")
+            logging.error(f"Error retrieving {airport} data by date range: {str(e)}")
             raise
 
     def __del__(self):
         """Cleanup method to close MongoDB connection"""
         try:
             self.client.close()
-            logging.info(f"Closed {self.airport_code} MongoDB connection")
+            logging.info("MongoDB connection closed")
         except Exception as e:
-            logging.error(f"Error closing {self.airport_code} MongoDB connection: {str(e)}")
-
-# Airport-specific storage classes
-class LGAStorage(BaseAirportStorage):
-    def __init__(self):
-        super().__init__('lga')
-
-class JFKStorage(BaseAirportStorage):
-    def __init__(self):
-        super().__init__('jfk')
-
-class EWRStorage(BaseAirportStorage):
-    def __init__(self):
-        super().__init__('ewr')
+            logging.error(f"Error closing MongoDB connection: {str(e)}")
