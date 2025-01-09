@@ -28,44 +28,44 @@ This application scrapes the latest wait times and walk times from NYC airports 
 
 **Backend**
 
-    1.	Navigate to the directory:
+1.	Navigate to the directory:
 
-    2.	Create and activate a Python virtual environment:
+2.	Create and activate a Python virtual environment:
 
-    ```
-       python3 -m venv .venv
-    ```
+```
+   python3 -m venv .venv
+```
 
-    ```
-        source .venv/bin/activate
-    ```
-    3.	Install the required dependencies:
-    ```
-    pip3 install -r requirements.txt
-    ```
+```
+    source .venv/bin/activate
+```
+3.	Install the required dependencies:
+```
+pip3 install -r requirements.txt
+```
 
-    4.	Run the Flask server:
-    ```
-    flask run
-    ```
+4.	Run the Flask server:
+```
+flask run
+```
 
 **Frontend**
 
-    1.	Navigate to the frontend directory (new terminal ):
-    ```
-    cd app
-    ```
+1.	Navigate to the frontend directory (new terminal ):
+```
+cd app
+```
 
-    2.	Install the required dependencies:
-    ```
-    npm install
-    ```
+2.	Install the required dependencies:
+```
+npm install
+```
 
-    3.	Run the frontend server:
+3.	Run the frontend server:
 
-    ```
-    npm run
-    ```
+```
+npm run
+```
 
 **Deployment:**
 
