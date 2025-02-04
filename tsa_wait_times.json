@@ -1,0 +1,98 @@
+{
+    "last_updated": "2025-02-03T20:43:19.676100-05:00",
+    "airports": [
+        {
+            "airport": "JFK",
+            "terminals": [
+                {
+                    "terminal": "1",
+                    "general_line_wait": "3",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:14.046409-05:00"
+                },
+                {
+                    "terminal": "4",
+                    "general_line_wait": "N/A",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:14.056506-05:00"
+                },
+                {
+                    "terminal": "5",
+                    "general_line_wait": "3",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:14.064797-05:00"
+                },
+                {
+                    "terminal": "7",
+                    "general_line_wait": "N/A",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:14.072773-05:00"
+                },
+                {
+                    "terminal": "8",
+                    "general_line_wait": "7",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:14.079749-05:00"
+                }
+            ]
+        },
+        {
+            "airport": "EWR",
+            "terminals": [
+                {
+                    "terminal": "A",
+                    "general_line_wait": "0",
+                    "tsa_pre_wait": "0",
+                    "timestamp": "2025-02-03T20:43:16.604595-05:00"
+                },
+                {
+                    "terminal": "B",
+                    "general_line_wait": "3",
+                    "tsa_pre_wait": "1",
+                    "timestamp": "2025-02-03T20:43:16.614792-05:00"
+                },
+                {
+                    "terminal": "B",
+                    "general_line_wait": "7",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:16.624334-05:00"
+                },
+                {
+                    "terminal": "B",
+                    "general_line_wait": "11",
+                    "tsa_pre_wait": "N/A",
+                    "timestamp": "2025-02-03T20:43:16.633105-05:00"
+                },
+                {
+                    "terminal": "C",
+                    "general_line_wait": "10",
+                    "tsa_pre_wait": "2",
+                    "timestamp": "2025-02-03T20:43:16.642287-05:00"
+                }
+            ]
+        },
+        {
+            "airport": "LGA",
+            "terminals": [
+                {
+                    "terminal": "A",
+                    "general_line_wait": "2",
+                    "tsa_pre_wait": "3",
+                    "timestamp": "2025-02-03T20:43:19.579457-05:00"
+                },
+                {
+                    "terminal": "B",
+                    "general_line_wait": "0",
+                    "tsa_pre_wait": "0",
+                    "timestamp": "2025-02-03T20:43:19.592505-05:00"
+                },
+                {
+                    "terminal": "C",
+                    "general_line_wait": "0",
+                    "tsa_pre_wait": "0",
+                    "timestamp": "2025-02-03T20:43:19.602645-05:00"
+                }
+            ]
+        }
+    ]
+}
