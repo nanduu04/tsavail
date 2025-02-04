@@ -41,12 +41,7 @@ This application scrapes the latest wait times and walk times from NYC airports 
 ```
 3.	Install the required dependencies:
 ```
-pip3 install -r requirements.txt
-```
-
-4.	Run the Flask server:
-```
-flask run
+pip3 install -r requirement.txt
 ```
 
 **Frontend**

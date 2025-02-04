@@ -1,132 +1,201 @@
+from dataclasses import dataclass
+from typing import List, Optional, Dict
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from datetime import datetime
-import json
-import logging
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from datetime import datetime
+import logging
+import asyncio
+from pathlib import Path
+from pytz import timezone
+from firebase_config import initialize_firebase
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
-class AirportTSAWaitScraper:
-    def __init__(self, url: str, airport_name: str, headless: bool = True):
-        """
-        Scraper for extracting TSA wait times from airport websites.
-        :param url: The URL of the airport security wait time page.
-        :param airport_name: The name of the airport being scraped.
-        :param headless: Whether to run the browser in headless mode.
-        """
-        self.BASE_URL = url
-        self.AIRPORT_NAME = airport_name
-        self.TIMEOUT = 10
+@dataclass
+class WaitTimeData:
+    terminal: str
+    general_line_wait: str
+    tsa_pre_wait: str
+    timestamp: str
 
+@dataclass
+class AirportData:
+    airport: str
+    terminals: List[WaitTimeData]
+
+class TSAWaitTimesScraper:
+    def __init__(self, headless: bool = True, timeout: int = 10):
+        self.timeout = timeout
+        self.options = self._setup_chrome_options(headless)
+        self.service = Service(ChromeDriverManager().install())
+        self.db = initialize_firebase()
+        
+    def _setup_chrome_options(self, headless: bool) -> webdriver.ChromeOptions:
         options = webdriver.ChromeOptions()
         if headless:
             options.add_argument('--headless=new')
-
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
-
-        service = Service(ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=service, options=options)
-        self.wait = WebDriverWait(self.driver, self.TIMEOUT)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if self.driver:
-            self.driver.quit()
-
-    def _clean_time(self, time_str: str) -> str:
-        """Clean up time strings, remove unwanted text."""
-        return time_str.replace('min', '').strip() if time_str else 'N/A'
-
-    def scrape(self):
-        """Scrapes security wait times from the airport's website."""
+        options.add_argument('--disable-gpu')
+        options.add_argument('--window-size=1920,1080')
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        return options
+    
+    def _create_driver(self) -> webdriver.Chrome:
+        return webdriver.Chrome(service=self.service, options=self.options)
+    
+    def _clean_wait_time(self, time_str: str) -> str:
+        if not time_str:
+            return 'N/A'
+            
+        time_str = time_str.lower().strip()
+        
+        if 'no wait' in time_str:
+            return '0'
+        if 'closed' in time_str:
+            return 'Closed'
+        if 'na' in time_str or 'n/a' in time_str:
+            return 'N/A'
+            
+        return ''.join(c for c in time_str if c.isdigit() or c == '-')
+    
+    async def _scrape_terminal_data(self, row: WebElement) -> Optional[WaitTimeData]:
         try:
-            logger.info(f"Scraping TSA wait times for {self.AIRPORT_NAME} ({self.BASE_URL})...")
-            self.driver.get(self.BASE_URL)
+            terminal_img = row.find_element(
+                By.XPATH,
+                ".//td[contains(@class, 'security-first-col')]//div[contains(@class, 'term-text')]//img"
+            )
+            terminal_name = terminal_img.get_attribute('alt').replace('Terminal ', '')
             
-            security_data = []
+            wait_times = row.find_elements(
+                By.XPATH,
+                ".//div[contains(@class, 'right-value')]//div[contains(@class, 'NA')]"
+            )
             
-            security_table = self.wait.until(
+            general_time = self._clean_wait_time(wait_times[1].text if len(wait_times) > 1 else '')
+            tsa_time = self._clean_wait_time(wait_times[2].text if len(wait_times) > 2 else '')
+            
+            return WaitTimeData(
+                terminal=terminal_name,
+                general_line_wait=general_time,
+                tsa_pre_wait=tsa_time,
+                timestamp=datetime.now(timezone('America/New_York')).isoformat()
+            )
+            
+        except Exception as e:
+            logger.error(f"Error extracting terminal data: {str(e)}")
+            return None
+    
+    async def scrape_airport(self, url: str, airport_code: str) -> Optional[AirportData]:
+        driver = None
+        try:
+            logger.info(f"Starting scrape for {airport_code} at {url}")
+            driver = self._create_driver()
+            wait = WebDriverWait(driver, self.timeout)
+            
+            driver.get(url)
+            
+            security_table = wait.until(
                 EC.presence_of_element_located((By.CLASS_NAME, 'security-table'))
             )
-
-            security_rows = security_table.find_elements(
-                By.XPATH, ".//tr[contains(@class, 'security-row') or contains(@class, 'odd') or contains(@class, 'even')]"
+            
+            rows = security_table.find_elements(
+                By.XPATH,
+                ".//tr[contains(@class, 'security-row') or contains(@class, 'odd') or contains(@class, 'even')]"
             )
-
-            timestamp = datetime.utcnow().isoformat()
-
-            for row in security_rows:
-                try:
-                    # Extract terminal name
-                    terminal_div = row.find_element(
-                        By.XPATH, ".//td[contains(@class, 'security-first-col')]//div[contains(@class, 'term-text')]"
-                    )
-                    terminal_name = terminal_div.find_element(By.TAG_NAME, "span").text.strip()
-
-                    # Extract wait times
-                    times = row.find_elements(
-                        By.XPATH, ".//div[contains(@class, 'right-value')]"
-                    )
-
-                    general_time = self._clean_time(times[0].text) if len(times) > 0 else 'N/A'
-                    tsa_time = self._clean_time(times[1].text) if len(times) > 1 else 'N/A'
-
-                    data = {
-                        "terminal": terminal_name,
-                        "general_line_wait": general_time,
-                        "tsa_pre_wait": tsa_time,
-                        "timestamp": timestamp
-                    }
-
-                    security_data.append(data)
-                    logger.info(f"Scraped {terminal_name}: General={general_time}, TSA Pre✓={tsa_time}")
-
-                except Exception as e:
-                    logger.error(f"Error processing security row: {str(e)}")
-                    continue
-
-            return security_data
-
+            
+            terminal_data = []
+            for row in rows:
+                if data := await self._scrape_terminal_data(row):
+                    terminal_data.append(data)
+            
+            if not terminal_data:
+                logger.warning(f"No terminal data found for {airport_code}")
+                return None
+                
+            return AirportData(airport=airport_code, terminals=terminal_data)
+            
         except Exception as e:
-            logger.error(f"Failed to scrape security wait times for {self.AIRPORT_NAME}: {str(e)}")
+            logger.error(f"Failed to scrape {airport_code}: {str(e)}")
             return None
-
+            
         finally:
-            self.driver.quit()
+            if driver:
+                driver.quit()
 
-def save_to_json(data, filename="../tsa_wait_times.json"):
-    """Saves the scraped TSA wait times to a JSON file."""
-    try:
-        with open(filename, "w") as json_file:
-            json.dump(data, json_file, indent=4)
-        logger.info(f"✅ TSA wait times saved to {filename}")
-    except Exception as e:
-        logger.error(f"Error saving to JSON: {str(e)}")
+    def _to_dict(self, obj):
+        if isinstance(obj, (AirportData, WaitTimeData)):
+            return {
+                key: self._to_dict(getattr(obj, key))
+                for key in obj.__dataclass_fields__
+            }
+        elif isinstance(obj, list):
+            return [self._to_dict(item) for item in obj]
+        else:
+            return obj
+
+    def save_to_firebase(self, data: Dict) -> None:
+        """Save data to Firebase"""
+        try:
+            # Convert data to dictionary format
+            firebase_data = self._to_dict(data)
+            
+            # Save current data to 'current' document
+            current_ref = self.db.collection('tsa_wait_times').document('current')
+            current_ref.set(firebase_data)
+            
+            # Save historical data
+            history_ref = self.db.collection('tsa_wait_times_history')
+            history_ref.add(firebase_data)
+            
+            logger.info("✅ Data saved to Firebase successfully")
+            
+        except Exception as e:
+            logger.error(f"Failed to save to Firebase: {str(e)}")
+
+class TSAWaitTimesManager:
+    def __init__(self):
+        self.scraper = TSAWaitTimesScraper()
+        self.airports = [
+            {"url": "https://www.jfkairport.com/", "code": "JFK"},
+            {"url": "https://www.newarkairport.com/", "code": "EWR"},
+            {"url": "https://www.laguardiaairport.com/", "code": "LGA"}
+        ]
+    
+    async def _scrape_all_airports(self) -> Dict:
+        tasks = []
+        for airport in self.airports:
+            task = self.scraper.scrape_airport(airport["url"], airport["code"])
+            tasks.append(task)
+        
+        results = await asyncio.gather(*tasks)
+        return {
+            "last_updated": datetime.now(timezone('America/New_York')).isoformat(),
+            "airports": [
+                self.scraper._to_dict(result)
+                for result in results
+                if result is not None
+            ]
+        }
+    
+    async def run(self) -> None:
+        try:
+            data = await self._scrape_all_airports()
+            self.scraper.save_to_firebase(data)
+        except Exception as e:
+            logger.error(f"Scraping operation failed: {str(e)}")
+
+async def main():
+    manager = TSAWaitTimesManager()
+    await manager.run()
 
 if __name__ == "__main__":
-    # Define multiple airports to scrape
-    airports = [
-        {"url": "https://www.jfkairport.com/", "name": "JFK"},
-        {"url": "https://www.newarkairport.com/", "name": "EWR"},
-        {"url": "https://www.laguardiaairport.com/", "name": "LGA"}
-    ]
-
-    all_data = {"last_updated": datetime.utcnow().isoformat(), "airports": []}
-
-    for airport in airports:
-        with AirportTSAWaitScraper(airport["url"], airport["name"]) as scraper:
-            tsa_data = scraper.scrape()
-            if tsa_data:
-                all_data["airports"].append({"airport": airport["name"], "terminals": tsa_data})
-
-    # Save to JSON
-    save_to_json(all_data)
+    asyncio.run(main())
